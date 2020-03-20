@@ -1,0 +1,13 @@
+pointsTo:
+  Safe:
+  - '#4:Sens[(20-CFA()|LSA[i:10,j:100]())]'
+  - '#6:Sens[(20-CFA()|LSA[i:10,j:100]())]'
+  TAJS:
+  - '@Object#node18'
+  - '@Object#node21'
+query:
+  file: example.js
+  groundTruth:
+    pointsToSize: 2
+  lineNumber: '9'
+  variable: t

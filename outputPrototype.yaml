@@ -1,0 +1,12 @@
+query:
+  file: "example.js"
+
+answer:
+  pointer: "t"
+  line: 9
+  pointsToSet:
+    tajs:
+      - 1
+      - 2
+    safe: -3
+      -4
