@@ -1,0 +1,17 @@
+{
+  "files": [
+    {
+      "name": "example.js",
+      "pointers": [
+        {
+          "varName": "t",
+          "lineNumber": 9
+        },
+        {
+          "varName": "src",
+          "lineNumber": 1
+        }
+      ]
+    }
+  ]
+}
