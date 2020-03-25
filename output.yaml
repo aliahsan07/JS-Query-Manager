@@ -1,11 +1,18 @@
-pointsTo:
-  Safe:
-  - ''
-  TAJS:
-  - ' name and line number combination passe'
-query:
-  file: example.js
-  groundTruth:
-    pointsToSize: 2
-  lineNumber: '8'
-  variable: t
+files:
+- filename: example.js
+  pointers:
+  - groundTruth: 2
+    lineNumber: 9
+    tajs:
+      output:
+      - '@Object#node18'
+      - '@Object#node21'
+      precision: 100.0
+    varname: t
+  - groundTruth: 1
+    lineNumber: 1
+    tajs:
+      output:
+      - '@Object#node13'
+      precision: 100.0
+    varname: src

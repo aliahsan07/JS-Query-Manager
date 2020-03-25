@@ -3,6 +3,14 @@ import ast
 import yaml
 import json
 from classes.TAJS import TAJS
+from classes.Safe import Safe
+from utils.StringUtils import parseKeys
+
+
+def comparePrecision(actualSetLen, outputSet):
+
+    precision = (actualSetLen/len(outputSet)) * 100
+    return precision
 
 
 def loadConfig():
@@ -12,6 +20,55 @@ def loadConfig():
 
     return config
 
+# writeTAJStoYAML needs refining
+
+
+def writeTAJStoYAML(tajsOutput, jsonObj):
+
+    refinedOutput = {}
+    for key in tajsOutput.keys():
+        keyAsStr = str(parseKeys(key))
+        refinedOutput[keyAsStr] = tajsOutput[key]
+
+    files = jsonObj['files']
+    for file in files:
+        for pointers in file['pointers']:
+            key = file['filename'] + '-' + pointers['varname'] + \
+                '-' + str(pointers['lineNumber'])
+            pointsTo = ast.literal_eval(refinedOutput[key])
+            pointers['tajs'] = {}
+            pointers['tajs']['output'] = pointsTo
+            pointers['tajs']['precision'] = comparePrecision(
+                pointers['groundTruth'], pointsTo)
+
+    return jsonObj
+
+
+def outputYAML(files, tajsOutput):
+    cumulativeOutput = {}
+
+    cumulativeOutput['files'] = []
+    for file in files:
+        cumulativeOutput['files'].append(
+            {
+                'filename': file['name']
+            }
+        )
+        cumulativeOutput['files'][-1]['pointers'] = []
+        for ptr in file['pointers']:
+            cumulativeOutput['files'][-1]['pointers'].append(
+                {
+                    'varname': ptr['varName'],
+                    'lineNumber': ptr['lineNumber'],
+                    'groundTruth': ptr['pointsToSize'],
+                }
+            )
+
+    final = writeTAJStoYAML(tajsOutput, cumulativeOutput)
+    print(">>>>> Outputting to output.yaml file <<<<< ")
+    with open('output.yaml', 'w') as f:
+        data = yaml.dump(final, f)
+
 
 def main():
     # load config
@@ -20,70 +77,28 @@ def main():
     # parse and make API calls
     files = config['files']
     tajs = TAJS()
+    safe = Safe()
     for file in files:
-        # make calls for every file?
         tajs.selectFile(file['name'])
+        safe.selectFile(file['name'])
         pointers = file['pointers']
 
         for tuple in pointers:
             var = tuple['varName']
             line = tuple['lineNumber']
             tajs.addCombo(var, line)
+            safe.addCombo(var, line)
 
-    print(tajs)
+    # make API call to TAJS
+    tajs.mkComboFile()
+    safe.mkComboFile()
+    # make API call to safe
+    tajsOutput = tajs.run()
 
+    # safe.run()
 
-def toDo():
-    while True:
-        jsSourceFile = 'example.js'
-        sourceVariable = input(
-            "Enter the variable you want to query for pointsTo Info: ")
-        lineNumber = input("Enter the corresponding line number: ")
-
-        # TAJS
-        print(">>>>> Running TAJS on JS Program <<<<< ")
-        tajsOutput = Popen(['java', '-jar', '../TAJS/TAJS-run/dist/tajs-all.jar',
-                            '-pointer', sourceVariable, '-line', lineNumber, jsSourceFile], stdout=PIPE, stderr=STDOUT)
-
-        cumulativeOutput = {}
-        cumulativeOutput['query'] = {
-            'file': jsSourceFile,
-            'variable': sourceVariable,
-            'lineNumber': lineNumber,
-            'groundTruth': {
-                'pointsToSize': 2,  # hard-coded
-            }
-        }
-
-        for line in tajsOutput.stdout:
-            decodedLine = line.decode('ascii')[16:-2]
-            pointsToSet = decodedLine.split(', ')
-
-        cumulativeOutput['pointsTo'] = {}
-        cumulativeOutput['pointsTo']['TAJS'] = []
-        for absLoc in pointsToSet:
-            cumulativeOutput['pointsTo']['TAJS'].append(absLoc)
-
-        # safe
-        print(">>>>> Running Safe on JS Program <<<<< ")
-        safeOutput = Popen(['safe', 'analyze', '-analyzer:pointer=' + sourceVariable,
-                            '-analyzer:line=' + lineNumber, jsSourceFile], stdout=PIPE, stderr=STDOUT)
-
-        for line in safeOutput.stdout:
-            decodedLine = line.decode('ascii')[20:-2]
-            pointsToSet = decodedLine.split(', ')
-
-        cumulativeOutput['pointsTo']['Safe'] = []
-        for absLoc in pointsToSet:
-            cumulativeOutput['pointsTo']['Safe'].append(absLoc)
-        # WALA
-
-        # how do we know ground truth
-
-        # output as yaml file
-        print(">>>>> Outputting to output.yaml file <<<<< ")
-        with open('output.yaml', 'w') as f:
-            data = yaml.dump(cumulativeOutput, f)
+    # output to YAML
+    outputYAML(files, tajsOutput)
 
 
 if __name__ == "__main__":

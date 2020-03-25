@@ -2,14 +2,18 @@
   "files": [
     {
       "name": "example.js",
+      "tajs": true,
+      "safe": false,
       "pointers": [
         {
           "varName": "t",
-          "lineNumber": 9
+          "lineNumber": 9,
+          "pointsToSize": 2
         },
         {
           "varName": "src",
-          "lineNumber": 1
+          "lineNumber": 1,
+          "pointsToSize": 1
         }
       ]
     }
