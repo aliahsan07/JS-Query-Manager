@@ -8,6 +8,7 @@ def readToolOutput(tajs=False, safe=False):
             tajsOutput = json.load(f)
             return tajsOutput
 
-    with open('safeOutput.json', 'r') as f:
-        safeOutput = json.load(f)
-        return safeOutput
+    if safe:
+        with open('safeOutput.json', 'r') as f:
+            safeOutput = json.load(f)
+            return safeOutput

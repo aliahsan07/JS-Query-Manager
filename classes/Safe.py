@@ -1,5 +1,6 @@
 from subprocess import Popen, PIPE, STDOUT
 from classes.Analysis import Analysis
+from utils.readTool import readToolOutput
 
 
 class Safe(Analysis):
@@ -12,5 +13,4 @@ class Safe(Analysis):
         safeOutput = Popen(['safe', 'analyze', '-analyzer:ptrSetFile=' + self.outputFile,
                             self.analysisFile], stdout=PIPE, stderr=STDOUT)
 
-        for line in safeOutput.stdout:
-            print(line.decode('ascii'))
+        return readToolOutput(safe=True)

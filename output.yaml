@@ -3,6 +3,11 @@ files:
   pointers:
   - groundTruth: 2
     lineNumber: 9
+    safe:
+      output:
+      - '#4:Sens[(20-CFA()|LSA[i:10,j:100]())]'
+      - '#6:Sens[(20-CFA()|LSA[i:10,j:100]())]'
+      precision: 100.0
     tajs:
       output:
       - '@Object#node18'
@@ -11,6 +16,10 @@ files:
     varname: t
   - groundTruth: 1
     lineNumber: 1
+    safe:
+      output:
+      - '#1:Sens[(20-CFA()|LSA[i:10,j:100]())]'
+      precision: 100.0
     tajs:
       output:
       - '@Object#node13'

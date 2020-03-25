@@ -2,8 +2,7 @@
   "files": [
     {
       "name": "example.js",
-      "tajs": true,
-      "safe": false,
+
       "pointers": [
         {
           "varName": "t",
@@ -17,5 +16,7 @@
         }
       ]
     }
-  ]
+  ],
+  "tajs": true,
+  "safe": true
 }

@@ -8,8 +8,10 @@ from utils.StringUtils import parseKeys
 
 
 def comparePrecision(actualSetLen, outputSet):
-
-    precision = (actualSetLen/len(outputSet)) * 100
+    try:
+        precision = (actualSetLen/len(outputSet)) * 100
+    except ZeroDivisionError:
+        precision = 'undefined'
     return precision
 
 
@@ -35,7 +37,13 @@ def writeTAJStoYAML(tajsOutput, jsonObj):
         for pointers in file['pointers']:
             key = file['filename'] + '-' + pointers['varname'] + \
                 '-' + str(pointers['lineNumber'])
-            pointsTo = ast.literal_eval(refinedOutput[key])
+            print(key)
+            print(refinedOutput[key])
+            pointsTo = []
+            try:
+                pointsTo = ast.literal_eval(refinedOutput[key])
+            except:
+                pass
             pointers['tajs'] = {}
             pointers['tajs']['output'] = pointsTo
             pointers['tajs']['precision'] = comparePrecision(
@@ -44,7 +52,35 @@ def writeTAJStoYAML(tajsOutput, jsonObj):
     return jsonObj
 
 
-def outputYAML(files, tajsOutput):
+def writeSafetoYAML(safeOutput, jsonObj):
+
+    refinedOutput = {}
+    for key in safeOutput.keys():
+        keyAsStr = str(parseKeys(key))
+        refinedOutput[keyAsStr] = safeOutput[key]
+
+    files = jsonObj['files']
+    for file in files:
+        for pointers in file['pointers']:
+            key = file['filename'] + '-' + pointers['varname'] + \
+                '-' + str(pointers['lineNumber'])
+            print(key)
+            print(refinedOutput[key])
+            pointsTo = []
+            try:
+                pointsTo = ast.literal_eval(refinedOutput[key])
+            except:
+                pass
+            pointers['safe'] = {}
+            pointers['safe']['output'] = pointsTo
+            print(pointers['safe']['output'])
+            pointers['safe']['precision'] = comparePrecision(
+                pointers['groundTruth'], pointsTo)
+
+    return jsonObj
+
+
+def outputYAML(files, tajsOutput, safeOutput):
     cumulativeOutput = {}
 
     cumulativeOutput['files'] = []
@@ -64,7 +100,11 @@ def outputYAML(files, tajsOutput):
                 }
             )
 
-    final = writeTAJStoYAML(tajsOutput, cumulativeOutput)
+    final = cumulativeOutput
+    if tajsOutput is not None:
+        final = writeTAJStoYAML(tajsOutput, final)
+    if safeOutput is not None:
+        final = writeSafetoYAML(safeOutput, final)
     print(">>>>> Outputting to output.yaml file <<<<< ")
     with open('output.yaml', 'w') as f:
         data = yaml.dump(final, f)
@@ -89,16 +129,18 @@ def main():
             tajs.addCombo(var, line)
             safe.addCombo(var, line)
 
-    # make API call to TAJS
     tajs.mkComboFile()
     safe.mkComboFile()
-    # make API call to safe
-    tajsOutput = tajs.run()
-
-    # safe.run()
+    # make API call to tajs and safe
+    tajsOutput = None
+    if config['tajs']:
+        tajsOutput = tajs.run()
+    safeOutput = None
+    if config['safe']:
+        safeOutput = safe.run()
 
     # output to YAML
-    outputYAML(files, tajsOutput)
+    outputYAML(files, tajsOutput, safeOutput)
 
 
 if __name__ == "__main__":
