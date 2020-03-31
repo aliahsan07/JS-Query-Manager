@@ -1,15 +1,18 @@
+import argparse
 from subprocess import Popen, PIPE, STDOUT
 import ast
 import yaml
 import json
+import sys
 from classes.TAJS import TAJS
 from classes.Safe import Safe
 from utils.StringUtils import parseKeys
+from testAnalysis import generatePtsOfInterest, generateConfigFile
 
 
 def comparePrecision(actualSetLen, outputSet):
     try:
-        precision = (actualSetLen/len(outputSet)) * 100
+        precision = (actualSetLen/len(outputSet))
     except ZeroDivisionError:
         precision = 'undefined'
     return precision
@@ -44,8 +47,8 @@ def writeTAJStoYAML(tajsOutput, jsonObj):
                 pass
             pointers['tajs'] = {}
             pointers['tajs']['output'] = pointsTo
-            # pointers['tajs']['precision'] = comparePrecision(
-            #     pointers['groundTruth'], pointsTo)
+            pointers['tajs']['precision'] = comparePrecision(
+                pointers['groundTruth'], pointsTo)
 
     return jsonObj
 
@@ -69,8 +72,8 @@ def writeSafetoYAML(safeOutput, jsonObj):
                 pass
             pointers['safe'] = {}
             pointers['safe']['output'] = pointsTo
-            # pointers['safe']['precision'] = comparePrecision(
-            #     pointers['groundTruth'], pointsTo)
+            pointers['safe']['precision'] = comparePrecision(
+                pointers['groundTruth'], pointsTo)
 
     return jsonObj
 
@@ -90,7 +93,8 @@ def outputYAML(files, tajsOutput, safeOutput):
             cumulativeOutput['files'][-1]['pointers'].append(
                 {
                     'varname': ptr['varName'],
-                    'lineNumber': ptr['lineNumber'],
+                    'lineNumber': int(ptr['lineNumber']),
+                    'groundTruth': int(ptr['pointsToSize'])
                 }
             )
 
@@ -104,8 +108,10 @@ def outputYAML(files, tajsOutput, safeOutput):
         data = yaml.dump(final, f)
 
 
-def main():
+def main(testFile, tajsOn, safeOn):
 
+    pointers = generatePtsOfInterest(testFile)
+    generateConfigFile(pointers, testFile, tajsOn, safeOn)
     # load config
     config = loadConfig()
 
@@ -139,4 +145,13 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--test", help="test file for analysis"
+    )
+    parser.add_argument(
+        "--tajs", help="enable analysis with tajs", action="store_true")
+    parser.add_argument(
+        "--safe", help="enable analysis with safe", action="store_true")
+    args = parser.parse_args()
+    main(args.test, args.tajs, args.safe)

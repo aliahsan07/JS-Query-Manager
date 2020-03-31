@@ -1,1 +1,1 @@
-{ "(example.js-temp-10)":"[]", "(example.js-ext-4)":"['#4:Sens[(20-CFA()|LSA[i:10,j:100]())]']", "(example.js-src-1)":"['#1:Sens[(20-CFA()|LSA[i:10,j:100]())]']", "(example.js-t-9)":"['#4:Sens[(20-CFA()|LSA[i:10,j:100]())]', '#6:Sens[(20-CFA()|LSA[i:10,j:100]())]']" }
+{ "(test-suite/aliasing/alias2.js-a-1)":"['#-41:Sens[(20-CFA(0:1)|LSA[i:10,j:100]())]']", "(test-suite/aliasing/alias2.js-b-3)":"['#-41:Sens[(20-CFA(0:1)|LSA[i:10,j:100]())]']" }

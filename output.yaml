@@ -1,35 +1,25 @@
 files:
-- filename: example.js
+- filename: test-suite/aliasing/alias2.js
   pointers:
-  - lineNumber: 9
+  - groundTruth: 1
+    lineNumber: 3
     safe:
       output:
-      - '#4:Sens[(20-CFA()|LSA[i:10,j:100]())]'
-      - '#6:Sens[(20-CFA()|LSA[i:10,j:100]())]'
+      - '#-41:Sens[(20-CFA(0:1)|LSA[i:10,j:100]())]'
+      precision: 1.0
     tajs:
       output:
-      - '@Object#node18'
-      - '@Object#node21'
-    varname: t
-  - lineNumber: 1
+      - '@Boolean#node14[boxed-primitive=true]'
+      precision: 1.0
+    varname: b
+  - groundTruth: 1
+    lineNumber: 1
     safe:
       output:
-      - '#1:Sens[(20-CFA()|LSA[i:10,j:100]())]'
+      - '#-41:Sens[(20-CFA(0:1)|LSA[i:10,j:100]())]'
+      precision: 1.0
     tajs:
       output:
-      - '@Object#node13'
-    varname: src
-  - lineNumber: 4
-    safe:
-      output:
-      - '#4:Sens[(20-CFA()|LSA[i:10,j:100]())]'
-    tajs:
-      output:
-      - '@Object#node18'
-    varname: ext
-  - lineNumber: 10
-    safe:
-      output: []
-    tajs:
-      output: []
-    varname: temp
+      - '@Boolean#node14[boxed-primitive=true]'
+      precision: 1.0
+    varname: a

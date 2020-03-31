@@ -1,40 +1,37 @@
-from slimit.parser import Parser
-from slimit.visitors.nodevisitor import ASTVisitor
-from slimit.lexer import Lexer
-from slimit import ast
-from slimit.visitors import nodevisitor
 import ast as astReader
+import json
+import re
 
 
-class MyVisitor(ASTVisitor):
-    def visit_Object(self, node):
-        """Visit object literal."""
-        pairs = {}
-        for prop in node:
-            left, right = prop.left, astReader.literal_eval(prop.right.value)
-            pairs[left.value] = astReader.literal_eval(right)
-            self.visit(prop)
-        return pairs
-
-
-def generateConfigFile(file):
+def generatePtsOfInterest(file):
     with open(file, 'r') as content_file:
         content = content_file.read()
 
-    parser = Parser()
-    tree = parser.parse(content)
-    visitor = MyVisitor()
-    found = False
-    pairs = {}
+    values = re.findall(r'groundTruth.*?=\s*(.*?);',
+                        content, re.DOTALL | re.MULTILINE)
 
-    for node in nodevisitor.visit(tree):
-        if isinstance(node, ast.Identifier) and node.value == 'groundTruth':
-            found = True
-        if isinstance(node, ast.Object):
-            pairs = visitor.visit(node)
-            break
-
-    return pairs
+    for value in values:
+        return json.loads(value)
 
 
-generateConfigFile("test-suite/aliasing/alias2.js")
+def generateConfigFile(ptrs, testFile, tajsOn, safeOn):
+
+    configDict = {'files': []}
+    configDict['tajs'] = tajsOn
+    configDict['safe'] = safeOn
+    configDict['files'].append({
+        "name": testFile,
+    })
+    currentFile = configDict['files'][0]
+    currentFile['pointers'] = []
+
+    for key, value in ptrs.items():
+        ptrName, line = key.split('-')
+        currentFile['pointers'].append({
+            "varName": ptrName,
+            "lineNumber": line,
+            "pointsToSize": value
+        })
+
+    with open('config.json', 'w') as outfile:
+        json.dump(configDict, outfile)
