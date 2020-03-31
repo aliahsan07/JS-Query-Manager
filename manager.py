@@ -37,8 +37,6 @@ def writeTAJStoYAML(tajsOutput, jsonObj):
         for pointers in file['pointers']:
             key = file['filename'] + '-' + pointers['varname'] + \
                 '-' + str(pointers['lineNumber'])
-            print(key)
-            print(refinedOutput[key])
             pointsTo = []
             try:
                 pointsTo = ast.literal_eval(refinedOutput[key])
@@ -46,8 +44,8 @@ def writeTAJStoYAML(tajsOutput, jsonObj):
                 pass
             pointers['tajs'] = {}
             pointers['tajs']['output'] = pointsTo
-            pointers['tajs']['precision'] = comparePrecision(
-                pointers['groundTruth'], pointsTo)
+            # pointers['tajs']['precision'] = comparePrecision(
+            #     pointers['groundTruth'], pointsTo)
 
     return jsonObj
 
@@ -64,8 +62,6 @@ def writeSafetoYAML(safeOutput, jsonObj):
         for pointers in file['pointers']:
             key = file['filename'] + '-' + pointers['varname'] + \
                 '-' + str(pointers['lineNumber'])
-            print(key)
-            print(refinedOutput[key])
             pointsTo = []
             try:
                 pointsTo = ast.literal_eval(refinedOutput[key])
@@ -73,9 +69,8 @@ def writeSafetoYAML(safeOutput, jsonObj):
                 pass
             pointers['safe'] = {}
             pointers['safe']['output'] = pointsTo
-            print(pointers['safe']['output'])
-            pointers['safe']['precision'] = comparePrecision(
-                pointers['groundTruth'], pointsTo)
+            # pointers['safe']['precision'] = comparePrecision(
+            #     pointers['groundTruth'], pointsTo)
 
     return jsonObj
 
@@ -96,7 +91,6 @@ def outputYAML(files, tajsOutput, safeOutput):
                 {
                     'varname': ptr['varName'],
                     'lineNumber': ptr['lineNumber'],
-                    'groundTruth': ptr['pointsToSize'],
                 }
             )
 
@@ -111,6 +105,7 @@ def outputYAML(files, tajsOutput, safeOutput):
 
 
 def main():
+
     # load config
     config = loadConfig()
 

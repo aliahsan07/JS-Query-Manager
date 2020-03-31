@@ -6,13 +6,19 @@
       "pointers": [
         {
           "varName": "t",
-          "lineNumber": 9,
-          "pointsToSize": 2
+          "lineNumber": 9
         },
         {
           "varName": "src",
-          "lineNumber": 1,
-          "pointsToSize": 1
+          "lineNumber": 1
+        },
+        {
+          "varName": "ext",
+          "lineNumber": 4
+        },
+        {
+          "varName": "temp",
+          "lineNumber": 10
         }
       ]
     }

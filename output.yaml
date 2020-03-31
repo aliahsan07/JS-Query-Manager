@@ -1,27 +1,35 @@
 files:
 - filename: example.js
   pointers:
-  - groundTruth: 2
-    lineNumber: 9
+  - lineNumber: 9
     safe:
       output:
       - '#4:Sens[(20-CFA()|LSA[i:10,j:100]())]'
       - '#6:Sens[(20-CFA()|LSA[i:10,j:100]())]'
-      precision: 100.0
     tajs:
       output:
       - '@Object#node18'
       - '@Object#node21'
-      precision: 100.0
     varname: t
-  - groundTruth: 1
-    lineNumber: 1
+  - lineNumber: 1
     safe:
       output:
       - '#1:Sens[(20-CFA()|LSA[i:10,j:100]())]'
-      precision: 100.0
     tajs:
       output:
       - '@Object#node13'
-      precision: 100.0
     varname: src
+  - lineNumber: 4
+    safe:
+      output:
+      - '#4:Sens[(20-CFA()|LSA[i:10,j:100]())]'
+    tajs:
+      output:
+      - '@Object#node18'
+    varname: ext
+  - lineNumber: 10
+    safe:
+      output: []
+    tajs:
+      output: []
+    varname: temp
