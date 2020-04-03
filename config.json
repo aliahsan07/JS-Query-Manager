@@ -1,1 +1,13 @@
-{"files": [{"name": "test-suite/aliasing/alias2.js", "pointers": [{"varName": "b", "lineNumber": "3", "pointsToSize": 1}, {"varName": "a", "lineNumber": "1", "pointsToSize": 1}]}], "tajs": true, "safe": true}
+{
+  "files": [
+    {
+      "name": "test-suite/aliasing/alias1.js",
+      "pointers": [
+        { "varName": "dest", "lineNumber": "2", "pointsToSize": 1 },
+        { "varName": "src", "lineNumber": "6", "pointsToSize": 1 }
+      ]
+    }
+  ],
+  "tajs": true,
+  "safe": true
+}

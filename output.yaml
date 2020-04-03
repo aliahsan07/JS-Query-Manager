@@ -1,25 +1,25 @@
 files:
-- filename: test-suite/aliasing/alias2.js
-  pointers:
-  - groundTruth: 1
-    lineNumber: 3
-    safe:
-      output:
-      - '#-41:Sens[(20-CFA(0:1)|LSA[i:10,j:100]())]'
-      precision: 1.0
-    tajs:
-      output:
-      - '@Boolean#node14[boxed-primitive=true]'
-      precision: 1.0
-    varname: b
-  - groundTruth: 1
-    lineNumber: 1
-    safe:
-      output:
-      - '#-41:Sens[(20-CFA(0:1)|LSA[i:10,j:100]())]'
-      precision: 1.0
-    tajs:
-      output:
-      - '@Boolean#node14[boxed-primitive=true]'
-      precision: 1.0
-    varname: a
+  - filename: test-suite/aliasing/alias1.js
+    pointers:
+      - groundTruth: 1
+        lineNumber: 2
+        safe:
+          output:
+            - "#4:Sens[(20-CFA()|LSA[i:10,j:100]())]"
+          precision: 1.0
+        tajs:
+          output:
+            - "@Object#node13"
+          precision: 1.0
+        varname: dest
+      - groundTruth: 1
+        lineNumber: 6
+        safe:
+          output:
+            - "#4:Sens[(20-CFA()|LSA[i:10,j:100]())]"
+          precision: 1.0
+        tajs:
+          output:
+            - "@Object#node13"
+          precision: 1.0
+        varname: src
