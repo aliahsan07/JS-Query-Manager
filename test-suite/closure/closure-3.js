@@ -1,11 +1,24 @@
-function init() {
-  var name = "Mozilla"; // name is a local variable created by init
-  name = "Firefox";
-  function displayName() {
-    // displayName() is the inner function, a closure
-    var toReturn = name;
-    return toReturn; // use variable declared in the parent function
+var arr = [];
+var i;
+
+for (i = 0; i < 10; i++) {
+  try {
+    throw true;
+  } catch (x) {
+    arr[i] = {
+      setX: function (v) {
+        x = v;
+      },
+      getX: function () {
+        return x;
+      }
+    };
   }
-  displayName();
 }
-init();
+
+arr[0].setX(10);
+arr[1].setX("ABC");
+
+var groundTruth = {
+  "arr-8": 1
+};

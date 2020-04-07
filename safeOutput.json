@@ -1,1 +1,1 @@
-{ "(test-suite/aliasing/alias1.js-src-6)":"['#4:Sens[(20-CFA()|LSA[i:10,j:100]())]']", "(test-suite/aliasing/alias1.js-dest-2)":"['#4:Sens[(20-CFA()|LSA[i:10,j:100]())]']" }
+{ "(test-suite/flow-sensitivity/flow-sensitivity-1.js-z-3)":"[]", "(test-suite/flow-sensitivity/flow-sensitivity-1.js-x-1)":"['#1:Sens[(20-CFA()|LSA[i:10,j:100]())]']", "(test-suite/flow-sensitivity/flow-sensitivity-1.js-f-3)":"['#4:Sens[(20-CFA()|LSA[i:10,j:100]())]']" }

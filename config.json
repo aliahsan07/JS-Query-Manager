@@ -1,13 +1,1 @@
-{
-  "files": [
-    {
-      "name": "test-suite/aliasing/alias1.js",
-      "pointers": [
-        { "varName": "dest", "lineNumber": "2", "pointsToSize": 1 },
-        { "varName": "src", "lineNumber": "6", "pointsToSize": 1 }
-      ]
-    }
-  ],
-  "tajs": true,
-  "safe": true
-}
+{"files": [{"name": "test-suite/flow-sensitivity/flow-sensitivity-1.js", "pointers": [{"varName": "f", "lineNumber": "3", "pointsToSize": 1}, {"varName": "x", "lineNumber": "1", "pointsToSize": 1}, {"varName": "z", "lineNumber": "3", "pointsToSize": 0}]}], "tajs": true, "safe": true}

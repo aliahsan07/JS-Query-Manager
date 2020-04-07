@@ -22,6 +22,9 @@ Rectangle.prototype.constructor = Rectangle;
 
 var rect = new Rectangle();
 
-console.log("Is rect an instance of Rectangle?", rect instanceof Rectangle); // true
-console.log("Is rect an instance of Shape?", rect instanceof Shape); // true
-rect.move(1, 1); // Outputs, 'Shape moved.'
+var groundTruth = {
+  "rect-23": 1
+};
+// console.log("Is rect an instance of Rectangle?", rect instanceof Rectangle); // true
+// console.log("Is rect an instance of Shape?", rect instanceof Shape); // true
+// rect.move(1, 1); // Outputs, 'Shape moved.'

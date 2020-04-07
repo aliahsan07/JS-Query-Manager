@@ -1,11 +1,21 @@
-var foo1 = function () {
-  this.baz1 = 42;
-};
-var foo2 = function () {};
+function Wheel4() {
+  this.wheel = 4;
+}
+function Car() {
+  this.maxspeed = 200;
+}
 
-foo2.prototype = new foo1();
+Car.prototype = new Wheel4();
+var modernCar = new Car();
 
-var xxx = new foo2();
-var y1 = xxx.baz1;
+function Wheel6() {
+  this.wheel = 6;
+}
 
-new foo1();
+Car.prototype = new Wheel6();
+
+var afterModern = modernCar instanceof Car; // false
+
+var truck = new Car();
+
+var aftertruck = truck instanceof Car; // true

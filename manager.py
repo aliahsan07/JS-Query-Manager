@@ -3,6 +3,7 @@ from subprocess import Popen, PIPE, STDOUT
 import ast
 import yaml
 import json
+import os
 import sys
 from classes.TAJS import TAJS
 from classes.Safe import Safe
@@ -14,7 +15,7 @@ def comparePrecision(actualSetLen, outputSet):
     try:
         precision = (actualSetLen/len(outputSet))
     except ZeroDivisionError:
-        precision = 'undefined'
+        precision = 0
     return precision
 
 
@@ -108,12 +109,25 @@ def outputYAML(files, tajsOutput, safeOutput):
         data = yaml.dump(final, f)
 
 
+def deleteOldFiles():
+    try:
+        os.remove("output.json")
+    except:
+        pass
+
+    try:
+        os.remove("safeOutput.json")
+    except:
+        pass
+
+
 def main(testFile, tajsOn, safeOn):
 
     pointers = generatePtsOfInterest(testFile)
     generateConfigFile(pointers, testFile, tajsOn, safeOn)
     # load config
     config = loadConfig()
+    deleteOldFiles()
 
     # parse and make API calls
     files = config['files']

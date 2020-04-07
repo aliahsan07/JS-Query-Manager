@@ -14,3 +14,7 @@ Vector.prototype.add = function (v, y) {
 var a = new Vector(); // x: 0, y: 0
 a.add(new Vector(1, 2)); // x: 1, y: 2
 a.add(10, 30);
+
+var groundTruth = {
+  "a-14": 1
+};

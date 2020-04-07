@@ -13,5 +13,5 @@ var t2 = t;
 var groundTruth = {
   "t2-11": 2,
   "ext-4": 1,
-  "ins-5": 1
+  "ins-5": 1,
 };

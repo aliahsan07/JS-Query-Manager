@@ -1,16 +1,14 @@
-function product(name, value) {
+function Student(name) {
   this.name = name;
-  if (value >= 1000) this.value = 999;
-  else this.value = value;
+  Student.prototype.count++;
 }
 
-function prod_dept(name, value, dept) {
-  this.dept = dept;
-  product.call(this, name, value);
-}
+Student.prototype.count = 0;
 
-prod_dept.prototype = new product();
+var x = new Student("Ali Ahsan");
+var y = new Student("John Doe");
 
-cheese = new prod_dept("feta", 5, "food");
-
-car = new prod_dept("honda", 5000, "auto");
+var groundTruth = {
+  "x-8": 1,
+  "y-9": 1
+};
