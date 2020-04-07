@@ -1,5 +1,3 @@
-// test 10
-// inheritance
 function Wheel4() {
   this.wheel = 4;
 }
@@ -9,8 +7,6 @@ function Car() {
 
 Car.prototype = new Wheel4();
 var modernCar = new Car();
-
-console.log(modernCar instanceof Car);
 
 function Wheel6() {
   this.wheel = 6;

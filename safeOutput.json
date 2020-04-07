@@ -1,1 +1,1 @@
-{ "(example.js-src-1)":"['#1:Sens[(20-CFA()|LSA[i:10,j:100]())]']", "(example.js-t-9)":"['#4:Sens[(20-CFA()|LSA[i:10,j:100]())]', '#6:Sens[(20-CFA()|LSA[i:10,j:100]())]']" }
+{ "(test-suite/flow-sensitivity/flow-sensitivity-1.js-z-3)":"[]", "(test-suite/flow-sensitivity/flow-sensitivity-1.js-x-1)":"['#1:Sens[(20-CFA()|LSA[i:10,j:100]())]']", "(test-suite/flow-sensitivity/flow-sensitivity-1.js-f-3)":"['#4:Sens[(20-CFA()|LSA[i:10,j:100]())]']" }

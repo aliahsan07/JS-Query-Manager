@@ -1,27 +1,34 @@
 files:
-- filename: example.js
+- filename: test-suite/flow-sensitivity/flow-sensitivity-1.js
   pointers:
-  - groundTruth: 2
-    lineNumber: 9
+  - groundTruth: 1
+    lineNumber: 3
     safe:
       output:
       - '#4:Sens[(20-CFA()|LSA[i:10,j:100]())]'
-      - '#6:Sens[(20-CFA()|LSA[i:10,j:100]())]'
-      precision: 100.0
+      precision: 1.0
     tajs:
       output:
       - '@Object#node18'
-      - '@Object#node21'
-      precision: 100.0
-    varname: t
+      precision: 1.0
+    varname: f
   - groundTruth: 1
     lineNumber: 1
     safe:
       output:
       - '#1:Sens[(20-CFA()|LSA[i:10,j:100]())]'
-      precision: 100.0
+      precision: 1.0
     tajs:
       output:
-      - '@Object#node13'
-      precision: 100.0
-    varname: src
+      - '@Object#node12'
+      precision: 1.0
+    varname: x
+  - groundTruth: 0
+    lineNumber: 3
+    safe:
+      output: []
+      precision: 0
+    tajs:
+      output: []
+      precision: 0
+    varname: z

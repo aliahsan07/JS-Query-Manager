@@ -1,6 +1,3 @@
-// test case 9
-// call, similar argument for apply
-
 function Product(name, price) {
   this.name = name;
   this.price = price;

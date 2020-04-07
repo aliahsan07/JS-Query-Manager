@@ -1,17 +1,21 @@
+import argparse
 from subprocess import Popen, PIPE, STDOUT
 import ast
 import yaml
 import json
+import os
+import sys
 from classes.TAJS import TAJS
 from classes.Safe import Safe
 from utils.StringUtils import parseKeys
+from testAnalysis import generatePtsOfInterest, generateConfigFile
 
 
 def comparePrecision(actualSetLen, outputSet):
     try:
-        precision = (actualSetLen/len(outputSet)) * 100
+        precision = (actualSetLen/len(outputSet))
     except ZeroDivisionError:
-        precision = 'undefined'
+        precision = 0
     return precision
 
 
@@ -37,8 +41,6 @@ def writeTAJStoYAML(tajsOutput, jsonObj):
         for pointers in file['pointers']:
             key = file['filename'] + '-' + pointers['varname'] + \
                 '-' + str(pointers['lineNumber'])
-            print(key)
-            print(refinedOutput[key])
             pointsTo = []
             try:
                 pointsTo = ast.literal_eval(refinedOutput[key])
@@ -64,8 +66,6 @@ def writeSafetoYAML(safeOutput, jsonObj):
         for pointers in file['pointers']:
             key = file['filename'] + '-' + pointers['varname'] + \
                 '-' + str(pointers['lineNumber'])
-            print(key)
-            print(refinedOutput[key])
             pointsTo = []
             try:
                 pointsTo = ast.literal_eval(refinedOutput[key])
@@ -73,7 +73,6 @@ def writeSafetoYAML(safeOutput, jsonObj):
                 pass
             pointers['safe'] = {}
             pointers['safe']['output'] = pointsTo
-            print(pointers['safe']['output'])
             pointers['safe']['precision'] = comparePrecision(
                 pointers['groundTruth'], pointsTo)
 
@@ -95,8 +94,8 @@ def outputYAML(files, tajsOutput, safeOutput):
             cumulativeOutput['files'][-1]['pointers'].append(
                 {
                     'varname': ptr['varName'],
-                    'lineNumber': ptr['lineNumber'],
-                    'groundTruth': ptr['pointsToSize'],
+                    'lineNumber': int(ptr['lineNumber']),
+                    'groundTruth': int(ptr['pointsToSize'])
                 }
             )
 
@@ -110,9 +109,25 @@ def outputYAML(files, tajsOutput, safeOutput):
         data = yaml.dump(final, f)
 
 
-def main():
+def deleteOldFiles():
+    try:
+        os.remove("output.json")
+    except:
+        pass
+
+    try:
+        os.remove("safeOutput.json")
+    except:
+        pass
+
+
+def main(testFile, tajsOn, safeOn):
+
+    pointers = generatePtsOfInterest(testFile)
+    generateConfigFile(pointers, testFile, tajsOn, safeOn)
     # load config
     config = loadConfig()
+    deleteOldFiles()
 
     # parse and make API calls
     files = config['files']
@@ -144,4 +159,13 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--test", help="test file for analysis"
+    )
+    parser.add_argument(
+        "--tajs", help="enable analysis with tajs", action="store_true")
+    parser.add_argument(
+        "--safe", help="enable analysis with safe", action="store_true")
+    args = parser.parse_args()
+    main(args.test, args.tajs, args.safe)
