@@ -1,21 +1,21 @@
-function Wheel4() {
-  this.wheel = 4;
-}
-function Car() {
-  this.maxspeed = 200;
+function Student(name) {
+  this.name = name;
+  Student.prototype.count++;
 }
 
-Car.prototype = new Wheel4();
-var modernCar = new Car();
+Student.prototype.count = 0;
 
-function Wheel6() {
-  this.wheel = 6;
-}
+var x = new Student("Ali Ahsan");
+var y = new Student("John Doe");
 
-Car.prototype = new Wheel6();
+// check if there is a count
+// z = x.count (make count an object instead of primitive)
+// student.prototype.f when you intialize it
+// reassign that count to some other object, whats the size of x.f
+// delete a field (delete a whole prototype), should not be a points to set
 
-var afterModern = modernCar instanceof Car; // false
 
-var truck = new Car();
-
-var aftertruck = truck instanceof Car; // true
+var groundTruth = {
+  "x-8": 1,
+  "y-9": 1
+};

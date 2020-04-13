@@ -9,3 +9,7 @@ function Food(name, price) {
 }
 
 var cheese = new Food("cheese", 5);
+
+var groundTruth = {
+  "cheese-11": 1
+};
