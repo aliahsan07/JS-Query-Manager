@@ -13,28 +13,4 @@ files:
       - '@Array#node24'
       pointsToSize: 1
       precision: 1.0
-    varname: c
-  - groundTruth: 1
-    lineNumber: 11
-    safe:
-      output:
-      - '#1:Sens[(20-CFA()|LSA[i:10,j:100]())]'
-      pointsToSize: 1
-      precision: 1.0
-    tajs:
-      output:
-      - '@Object#node14'
-      pointsToSize: 1
-      precision: 1.0
-    varname: c
-  - groundTruth: 0
-    lineNumber: 13
-    safe:
-      output: []
-      pointsToSize: 0
-      precision: 1.0
-    tajs:
-      output: []
-      pointsToSize: 0
-      precision: 1.0
-    varname: c
+    varname: b.c

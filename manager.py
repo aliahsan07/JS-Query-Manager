@@ -42,7 +42,10 @@ def writeTAJStoYAML(tajsOutput, jsonObj):
     files = jsonObj['files']
     for file in files:
         for pointers in file['pointers']:
-            key = file['filename'] + '-' + pointers['varname'] + \
+            varName = pointers['varname']
+            if '.' in varName:
+                varName = varName.split('.')[1]
+            key = file['filename'] + '-' + varName + \
                 '-' + str(pointers['lineNumber'])
             pointsTo = []
             try:
@@ -68,7 +71,10 @@ def writeSafetoYAML(safeOutput, jsonObj):
     files = jsonObj['files']
     for file in files:
         for pointers in file['pointers']:
-            key = file['filename'] + '-' + pointers['varname'] + \
+            varName = pointers['varname']
+            if '.' in varName:
+                varName = varName.split('.')[1]
+            key = file['filename'] + '-' + varName + \
                 '-' + str(pointers['lineNumber'])
             pointsTo = []
             try:

@@ -15,6 +15,8 @@ class Analysis:
         f = open(self.outputFile, "w")
 
         for var, line in self.tuples:
+            if '.' in var:
+                var = var.split('.')[1]
             f.write(var + " " + str(line) + "\n")
 
     # its not working???
