@@ -3,7 +3,7 @@ function Student(name) {
   Student.prototype.count++;
 }
 
-Student.prototype.count = 0;
+Student.prototype.count = { x: 0 };
 
 var x = new Student("Ali Ahsan");
 var y = new Student("John Doe");
@@ -13,7 +13,6 @@ var y = new Student("John Doe");
 // student.prototype.f when you intialize it
 // reassign that count to some other object, whats the size of x.f
 // delete a field (delete a whole prototype), should not be a points to set
-
 
 var groundTruth = {
   "x-8": 1,
