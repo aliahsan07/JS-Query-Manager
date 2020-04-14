@@ -3,7 +3,7 @@ Currently, two tools are supported, TAJS and Safe.
 
 # How to run
 ```
-python3 manager.py --test test-suite/object-sensitivity/object-sensitivity-3.js --safe --tajs
+python3 manager.py --test test-suite/prototype/prototype-5.js --safe --tajs
 ``` 
 
 ## Flags
