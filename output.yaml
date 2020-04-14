@@ -1,16 +1,11 @@
 files:
-- filename: test-suite/prototype/prototype-5.js
+- filename: test-suite/property-name/property-name-3.js
   pointers:
   - groundTruth: 1
-    lineNumber: 8
-    safe:
-      output:
-      - '#8:Sens[(20-CFA()|LSA[i:10,j:100]())]'
-      pointsToSize: 1
-      precision: 1.0
+    lineNumber: 12
     tajs:
       output:
-      - '@Array#node24'
+      - '@Array#node19'
       pointsToSize: 1
       precision: 1.0
-    varname: b.c
+    varname: t1

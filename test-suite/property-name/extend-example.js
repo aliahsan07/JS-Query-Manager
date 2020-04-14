@@ -52,7 +52,10 @@ var object2 = {
 var shallow = extend(object1, object2);
 var deep = extend(true, object1, object2);
 
+var shallowBanana = shallow.banana;
+var deepBanana = deep.banana;
+
 var groundTruth = {
-  "shallow-52": 1,
-  "deep-53": 1
+  "shallowBanana-55": 1,
+  "deepBanana-56": 1
 };

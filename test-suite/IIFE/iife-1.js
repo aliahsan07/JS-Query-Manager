@@ -1,8 +1,16 @@
-var a = 2;
+var x = {
+  c: {}
+};
 
-(function IIFE() {
-  var a = 3;
-  console.log(a); // 3
+var t1 = x.c;
+
+(function () {
+  x.c = [];
 })();
 
-console.log(a); // 2
+t1 = x.c;
+
+var groundTruth = {
+  "t1-5": 1,
+  "t1-11": 1
+};

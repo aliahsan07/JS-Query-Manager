@@ -15,12 +15,12 @@ var o2 = {
 foo(o1);
 
 foo(o2);
-o1.a;
-o2.a; // undefined
-a; // leaked global
+var t1 = o1.a;
+var t2 = o2.a; // undefined
+var t3 = a; // leaked global
 
 var groundTruth = {
-  "a-18": 1,
-  "a-19": 0,
-  "a-20": 1
+  "t1-18": 1,
+  "t2-19": 0,
+  "t3-20": 1
 };
