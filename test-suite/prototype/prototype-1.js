@@ -1,14 +1,12 @@
-function StringBuffer() {
-  this.array = [];
-}
-
-StringBuffer.prototype.append = function (x) {
-  this.array.push(x);
+var Person = {
+  m: [5]
 };
+var y = Object.create(Person);
+var z = y.m;
 
-var sb = new StringBuffer();
-sb.append({});
+delete Person.m;
+var z = y.m;
 
 var groundTruth = {
-  "sb-9": 1
+  "z-8": 0
 };

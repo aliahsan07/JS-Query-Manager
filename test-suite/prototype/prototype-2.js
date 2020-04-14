@@ -1,20 +1,12 @@
-function Vector(x, y) {
-  this.x = x || 0;
-  this.y = y || 0;
-}
-Vector.prototype.add = function (v, y) {
-  if (v instanceof Vector) {
-    this.x += v.x;
-    this.y += v.y;
-  } else {
-    this.x += v || 0;
-    this.y += y || 0;
-  }
+var Person = {
+  m: [5]
 };
-var a = new Vector(); // x: 0, y: 0
-a.add(new Vector(1, 2)); // x: 1, y: 2
-a.add(10, 30);
+var y = Object.create(Person);
+var z = y.m;
+y.m = [10];
 
 var groundTruth = {
-  "a-14": 1
+  "m-2": 1,
+  "z-5": 1,
+  "m-6": 1
 };

@@ -15,7 +15,10 @@ def comparePrecision(actualSetLen, outputSet):
     try:
         precision = (actualSetLen/len(outputSet))
     except ZeroDivisionError:
-        precision = 0
+        if actualSetLen == 0 and len(outputSet) == 0:
+            precision = 1.0
+        else:
+            precision = 0
     return precision
 
 
@@ -50,6 +53,7 @@ def writeTAJStoYAML(tajsOutput, jsonObj):
             pointers['tajs']['output'] = pointsTo
             pointers['tajs']['precision'] = comparePrecision(
                 pointers['groundTruth'], pointsTo)
+            pointers['tajs']['pointsToSize'] = len(pointsTo)
 
     return jsonObj
 
@@ -75,6 +79,7 @@ def writeSafetoYAML(safeOutput, jsonObj):
             pointers['safe']['output'] = pointsTo
             pointers['safe']['precision'] = comparePrecision(
                 pointers['groundTruth'], pointsTo)
+            pointers['safe']['pointsToSize'] = len(pointsTo)
 
     return jsonObj
 

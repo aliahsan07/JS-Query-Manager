@@ -1,23 +1,40 @@
 files:
-- filename: test-suite/object-sensitivity/object-sensitivity-3.js
+- filename: test-suite/prototype/prototype-5.js
   pointers:
   - groundTruth: 1
-    lineNumber: 21
+    lineNumber: 8
     safe:
-      output: []
-      precision: 0
+      output:
+      - '#8:Sens[(20-CFA()|LSA[i:10,j:100]())]'
+      pointsToSize: 1
+      precision: 1.0
     tajs:
       output:
-      - '@Object#node22'
+      - '@Array#node24'
+      pointsToSize: 1
       precision: 1.0
-    varname: f
+    varname: c
   - groundTruth: 1
-    lineNumber: 22
+    lineNumber: 11
     safe:
-      output: []
-      precision: 0
+      output:
+      - '#1:Sens[(20-CFA()|LSA[i:10,j:100]())]'
+      pointsToSize: 1
+      precision: 1.0
     tajs:
       output:
-      - '@Object#node26'
+      - '@Object#node14'
+      pointsToSize: 1
       precision: 1.0
-    varname: f
+    varname: c
+  - groundTruth: 0
+    lineNumber: 13
+    safe:
+      output: []
+      pointsToSize: 0
+      precision: 1.0
+    tajs:
+      output: []
+      pointsToSize: 0
+      precision: 1.0
+    varname: c

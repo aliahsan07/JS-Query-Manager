@@ -1,30 +1,26 @@
-// Shape - superclass
-function Shape() {
-  this.x = 0;
-  this.y = 0;
+function Person(n) {
+  this.setName(n);
+  Person.prototype.count++;
+  this.m = [5];
 }
-
-// superclass method
-Shape.prototype.move = function (x, y) {
-  this.x += x;
-  this.y += y;
-  console.info("Shape moved.");
+Person.prototype.count = 0;
+Person.prototype.setName = function (n) {
+  this.name = n;
 };
 
-// Rectangle - subclass
-function Rectangle() {
-  Shape.call(this); // call super constructor.
+function Student(n, s) {
+  this.b = Person;
+  this.b(n);
+  delete this.b;
+  this.studentid = s.toString();
 }
+Student.prototype = new Person();
 
-// subclass extends superclass
-Rectangle.prototype = Object.create(Shape.prototype);
-Rectangle.prototype.constructor = Rectangle;
-
-var rect = new Rectangle();
+var x = new Student("Joe Average", 1);
+delete x.m;
+var y = new Person("Ali");
+var z = x.m;
 
 var groundTruth = {
-  "rect-23": 1
+  "z-22": 1
 };
-// console.log("Is rect an instance of Rectangle?", rect instanceof Rectangle); // true
-// console.log("Is rect an instance of Shape?", rect instanceof Shape); // true
-// rect.move(1, 1); // Outputs, 'Shape moved.'
