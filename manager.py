@@ -161,9 +161,13 @@ def main(testFile, tajsOn, safeOn):
     tajsOutput = None
     if config['tajs']:
         tajsOutput = tajs.run()
+        # tajsOutput = tajs.runWithDeterminacy()
+        # tajsOutput = tajs.runWithDeterminacyAndUneval()
+        #tajsOutput = tajs.runBlendedAnalysis()
     safeOutput = None
     if config['safe']:
-        safeOutput = safe.run()
+        # safeOutput = safe.run()
+        safeOutput = safe.runWithRecencyAbstraction()
 
     # output to YAML
     outputYAML(files, tajsOutput, safeOutput)
