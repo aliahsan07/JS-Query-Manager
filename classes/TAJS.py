@@ -12,7 +12,7 @@ class TAJS(Analysis):
         self.baseCommand = ['java', '-jar', '../TAJS/TAJS-run/dist/tajs-all.jar',
                             '-ptrSetFile', self.outputFile, '-quiet']
         self.flags = ["-uneval", "-determinacy",
-                      ("-blended-analysis", "logFile"), ("-unsound", "X")]
+                      ("-blended-analysis", "-generate-log", "-log-file", "log-file.log"), ("-unsound", "X")]
         self.combinations = []
         for L in range(0, len(self.flags)+1):
             for subset in itertools.combinations(self.flags, L):
@@ -28,18 +28,16 @@ class TAJS(Analysis):
     def runWithDeterminacyAndUneval(self):
         return self.run('-determinacy', '-uneval')
 
+    def runBlendedAnalysis(self):
+        return self.run(self.flags[2])
+
     def run(self, *flags):
         print(">>>>> Running TAJS on JS Program <<<<< ")
         command = self.baseCommand.copy()
         for arg in flags:
             if isinstance(arg, tuple):
-                if arg[0] == '-blended-analysis':
-                    f = arg[1]
-                    if not os.path.isfile(f):
-                        print("Error: log file not found for blended analysis")
-                        continue
-                command.append(arg[0])
-                command.append(arg[1])
+                for a in arg:
+                    command.append(a)
             else:
                 command.append(arg)
 
