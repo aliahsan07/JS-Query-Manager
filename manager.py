@@ -160,7 +160,9 @@ def main(testFile, tajsOn, safeOn):
     # make API call to tajs and safe
     tajsOutput = None
     if config['tajs']:
-        tajsOutput = tajs.run()
+        # tajsOutput = tajs.run()
+        tajsOutput = tajs.runWithDeterminacy()
+        # tajsOutput = tajs.runWithDeterminacyAndUneval()
     safeOutput = None
     if config['safe']:
         safeOutput = safe.run()

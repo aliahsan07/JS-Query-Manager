@@ -1,0 +1,20 @@
+unsoundOptions = [
+    '-assume-in-operator-returns-true-when-sound-value-is-maybe-true-and-propname-is-number',
+    '-ignore-async-evals',
+    '-ignore-events-after-exceptions',
+    '-ignore-imprecise-evals',
+    '-ignore-imprecise-function-constructor',
+    '-ignore-locale',
+    '-ignore-missing-native-models',
+    '-ignore-some-prototypes-during-dynamic-property-reads',
+    '-ignore-undefined-partitions',
+    '-ignore-unlikely-property-reads',
+    '-ignore-unlikely-undefined-as-first-argument-to-addition',
+    '-no-exceptions',
+    '-no-implicit-global-var-declarations',
+    '-show-unsoundness-usage',
+    '-use-fixed-random',
+    '-use-ordered-object-keys',
+    '-use-precise-function-toString',
+    '-warn-about-all-string-coercions'
+]

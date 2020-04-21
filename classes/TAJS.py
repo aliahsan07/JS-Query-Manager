@@ -10,7 +10,7 @@ class TAJS(Analysis):
     def __init__(self, t=[]):
         super().__init__(t)
         self.baseCommand = ['java', '-jar', '../TAJS/TAJS-run/dist/tajs-all.jar',
-                            '-ptrSetFile', self.outputFile]
+                            '-ptrSetFile', self.outputFile, '-quiet']
         self.flags = ["-uneval", "-determinacy",
                       ("-blended-analysis", "logFile"), ("-unsound", "X")]
         self.combinations = []
@@ -21,6 +21,12 @@ class TAJS(Analysis):
     def runAllCombinations(self):
         for combination in self.combinations:
             self.run(*combination)
+
+    def runWithDeterminacy(self):
+        return self.run('-determinacy')
+
+    def runWithDeterminacyAndUneval(self):
+        return self.run('-determinacy', '-uneval')
 
     def run(self, *flags):
         print(">>>>> Running TAJS on JS Program <<<<< ")
@@ -39,5 +45,8 @@ class TAJS(Analysis):
 
         command.append(self.analysisFile)
         tajsOutput = Popen(command, stdout=PIPE, stderr=STDOUT)
-        print(command)
+        pipeOutput = tajsOutput.communicate()[0][:9].decode()
+        if pipeOutput == 'Exception':
+            print("TAJS didn't terminate, resulted in exception")
+            return
         return readToolOutput(tajs=True)
