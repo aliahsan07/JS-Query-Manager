@@ -143,7 +143,8 @@ def main(testFile, tajsOn, safeOn):
     # parse and make API calls
     files = config['files']
     tajs = TAJS()
-    safe = Safe()
+    # safe = Safe()
+    safe = Safe(callsiteSensitivity=0, loopDepth=0, loopIter=0)
     for file in files:
         tajs.selectFile(file['name'])
         safe.selectFile(file['name'])
@@ -166,8 +167,8 @@ def main(testFile, tajsOn, safeOn):
         #tajsOutput = tajs.runBlendedAnalysis()
     safeOutput = None
     if config['safe']:
-        # safeOutput = safe.run()
-        safeOutput = safe.runWithRecencyAbstraction()
+        safeOutput = safe.run()
+        # safeOutput = safe.runWithRecencyAbstraction()
 
     # output to YAML
     outputYAML(files, tajsOutput, safeOutput)
