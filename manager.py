@@ -9,6 +9,7 @@ from classes.TAJS import TAJS
 from classes.Safe import Safe
 from utils.StringUtils import parseKeys
 from testAnalysis import generatePtsOfInterest, generateConfigFile
+from configs.safeConfig import SafeConfig
 
 
 def comparePrecision(actualSetLen, outputSet):
@@ -184,4 +185,5 @@ if __name__ == "__main__":
     parser.add_argument(
         "--safe", help="enable analysis with safe", action="store_true")
     args = parser.parse_args()
+    safeConfig = SafeConfig()
     main(args.test, args.tajs, args.safe)

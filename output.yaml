@@ -1,11 +1,26 @@
 files:
-- filename: test-suite/property-name/property-name-3.js
+- filename: test-suite/prototype/prototype-5.js
   pointers:
   - groundTruth: 1
-    lineNumber: 12
-    tajs:
+    lineNumber: 8
+    safe:
       output:
-      - '@Array#node19'
+      - '#8:Sens[Empty]'
       pointsToSize: 1
       precision: 1.0
-    varname: t1
+    varname: c
+  - groundTruth: 1
+    lineNumber: 11
+    safe:
+      output:
+      - '#1:Sens[Empty]'
+      pointsToSize: 1
+      precision: 1.0
+    varname: c
+  - groundTruth: 0
+    lineNumber: 13
+    safe:
+      output: []
+      pointsToSize: 0
+      precision: 1.0
+    varname: c

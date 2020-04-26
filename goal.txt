@@ -1,33 +1,10 @@
-# Next goal
-develop a test cases/micro benchmark for tools
-similar to taint analysis paper 
-
-Points to benchmark for js, test precision, soundness
-different categories i.e context sensitivity, aliasing, ICC
-
-JS features + static analysis features
-
-droidbench benchmark (for taint)
-each category had multiple apks
-
-start simple, with aliasing, query the points to size 
-start with test cases 
-
-3 to 10 for each 
-generate config.json for each feature i.e aliasing
-
-share the list of features first
-
-
-----------------------------------
-
 callsite by default on safe: 20
 add 10%: 22
 deduct 10%: 18
 add 20
 deduct 20
 add 50% 
-deduct 500%
+deduct 50%
 add 100%
 deduct 100%
 add 500%
