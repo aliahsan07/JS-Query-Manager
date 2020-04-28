@@ -1,14 +1,18 @@
-import argparse
-from subprocess import Popen, PIPE, STDOUT
-import ast
-import yaml
-import json
-from mdutils import MdUtils
+# Libraries
 import os
 import os.path
 import sys
+import argparse
+import ast
+import multiprocessing
+# yaml, json, md file handlers
+import yaml
+import json
+from mdutils import MdUtils
+# Classes
 from classes.TAJS import TAJS
 from classes.Safe import Safe
+# Utils
 from utils.StringUtils import parseKeys
 from testAnalysis import generatePtsOfInterest, generateConfigFile
 from configs.safeConfig import SafeConfig
@@ -43,46 +47,44 @@ def writeTAJStoYAML(tajsOutput, jsonObj):
         keyAsStr = str(parseKeys(key))
         refinedOutput[keyAsStr] = tajsOutput[key]
 
-    files = jsonObj['files']
-    for file in files:
-        for pointers in file['pointers']:
-            varName = pointers['varname']
-            if '.' in varName:
-                varName = varName.split('.')[-1]
-            key = file['filename'] + '-' + varName + \
-                '-' + str(pointers['lineNumber'])
-            pointsTo = []
-            try:
-                pointsTo = ast.literal_eval(refinedOutput[key])
-            except:
-                pass
-            pointers['tajs'] = {}
-            pointers['tajs']['output'] = pointsTo
-            pointers['tajs']['precision'] = comparePrecision(
-                pointers['groundTruth'], pointsTo)
-            pointers['tajs']['pointsToSize'] = len(pointsTo)
+    file = jsonObj
+    for pointers in file['pointers']:
+        varName = pointers['varname']
+        if '.' in varName:
+            varName = varName.split('.')[-1]
+        key = file['filename'] + '-' + varName + \
+            '-' + str(pointers['lineNumber'])
+        pointsTo = []
+        try:
+            pointsTo = ast.literal_eval(refinedOutput[key])
+        except:
+            pass
+        pointers['tajs'] = {}
+        pointers['tajs']['output'] = pointsTo
+        pointers['tajs']['precision'] = comparePrecision(
+            pointers['groundTruth'], pointsTo)
+        pointers['tajs']['pointsToSize'] = len(pointsTo)
 
     return jsonObj
 
 
-def outputSafeStats(safeConfig, globalConfig, safeOutput):
+def outputSafeStats(globalConfig, safeOutput):
     fileName = makeNewFileName()
     # output stats to out file
     # hacky, fix this
-    analysisFile = globalConfig['files'][0]
-    analysisFileName = analysisFile['filename']
+    analysisFileName = globalConfig['filename']
     mdFile = MdUtils(file_name=fileName,
                      title="File Analyzed: " + analysisFileName)
-    callSiteSen = str(safeConfig['callSiteSensitivity'])
+    callSiteSen = str(safeConfig.callSiteSensitivity)
     mdFile.new_paragraph('Call-Site Sensitivity: ' +
                          callSiteSen, bold_italics_code='bi', color='purple')
     mdFile.new_paragraph(
-        'Loop Depth: ' + str(safeConfig['loopDepth']), bold_italics_code='bi', color='purple')
+        'Loop Depth: ' + str(safeConfig.loopDepth), bold_italics_code='bi', color='purple')
     mdFile.new_paragraph(
-        'Loop Iter: ' + str(safeConfig['loopIter']), bold_italics_code='bi', color='purple')
+        'Loop Iter: ' + str(safeConfig.loopIter), bold_italics_code='bi', color='purple')
 
     mdFile.new_header(level=3, title="Analysis results")
-    for pointer in analysisFile['pointers']:
+    for pointer in globalConfig['pointers']:
         varName = pointer['varname']
         lineNumber = pointer['lineNumber']
         groundTruth = pointer['groundTruth']
@@ -115,49 +117,41 @@ def writeSafetoYAML(safeOutput, jsonObj):
         keyAsStr = str(parseKeys(key))
         refinedOutput[keyAsStr] = safeOutput[key]
 
-    files = jsonObj['files']
-    for file in files:
-        for pointers in file['pointers']:
-            varName = pointers['varname']
-            if '.' in varName:
-                varName = varName.split('.')[-1]
-            key = file['filename'] + '-' + varName + \
-                '-' + str(pointers['lineNumber'])
-            pointsTo = []
-            try:
-                pointsTo = ast.literal_eval(refinedOutput[key])
-            except:
-                pass
-            pointers['safe'] = {}
-            pointers['safe']['output'] = pointsTo
-            pointers['safe']['precision'] = comparePrecision(
-                pointers['groundTruth'], pointsTo)
-            pointers['safe']['pointsToSize'] = len(pointsTo)
+    file = jsonObj
+    for pointers in file['pointers']:
+        varName = pointers['varname']
+        if '.' in varName:
+            varName = varName.split('.')[-1]
+        key = file['filename'] + '-' + varName + \
+            '-' + str(pointers['lineNumber'])
+        pointsTo = []
+        try:
+            pointsTo = ast.literal_eval(refinedOutput[key])
+        except:
+            pass
+        pointers['safe'] = {}
+        pointers['safe']['output'] = pointsTo
+        pointers['safe']['precision'] = comparePrecision(
+            pointers['groundTruth'], pointsTo)
+        pointers['safe']['pointsToSize'] = len(pointsTo)
 
-    c = {'callSiteSensitivity': 1, 'loopIter': 100, 'loopDepth': 10}
-    outputSafeStats(c, jsonObj, refinedOutput)
+    outputSafeStats(jsonObj, refinedOutput)
     return jsonObj
 
 
-def outputYAML(files, tajsOutput, safeOutput):
+def outputYAML(config, tajsOutput, safeOutput):
     cumulativeOutput = {}
 
-    cumulativeOutput['files'] = []
-    for file in files:
-        cumulativeOutput['files'].append(
+    cumulativeOutput['filename'] = config['name']
+    cumulativeOutput['pointers'] = []
+    for ptr in config['pointers']:
+        cumulativeOutput['pointers'].append(
             {
-                'filename': file['name']
+                'varname': ptr['varName'],
+                'lineNumber': int(ptr['lineNumber']),
+                'groundTruth': int(ptr['pointsToSize'])
             }
         )
-        cumulativeOutput['files'][-1]['pointers'] = []
-        for ptr in file['pointers']:
-            cumulativeOutput['files'][-1]['pointers'].append(
-                {
-                    'varname': ptr['varName'],
-                    'lineNumber': int(ptr['lineNumber']),
-                    'groundTruth': int(ptr['pointsToSize'])
-                }
-            )
 
     final = cumulativeOutput
     if tajsOutput is not None:
@@ -181,6 +175,22 @@ def deleteOldFiles():
         pass
 
 
+def loadSafe(callSiteSen):
+    safe = Safe(callsiteSensitivity=callSiteSen)
+
+
+def bootSafe():
+    percentages = safeConfig.options
+    callSiteSensOptions = [safeConfig.calculateCallSiteSen(
+        percentage) for percentage in percentages]
+
+    processes = []
+    print(callSiteSensOptions)
+    # for opt in range(callSiteSensOptions):
+    # first = opt[0]
+    # second = opt[1]
+
+
 def main(testFile, tajsOn, safeOn):
 
     pointers = generatePtsOfInterest(testFile)
@@ -190,21 +200,21 @@ def main(testFile, tajsOn, safeOn):
     deleteOldFiles()
 
     # parse and make API calls
-    files = config['files']
     tajs = TAJS()
     # safe = Safe()
     safe = Safe(callsiteSensitivity=0, loopDepth=0, loopIter=0)
-    for file in files:
-        tajs.selectFile(file['name'])
-        safe.selectFile(file['name'])
-        pointers = file['pointers']
+    bootSafe()
+    tajs.selectFile(config['name'])
+    safe.selectFile(config['name'])  # change this
+    pointers = config['pointers']
 
-        for tuple in pointers:
-            var = tuple['varName']
-            line = tuple['lineNumber']
-            tajs.addCombo(var, line)
-            safe.addCombo(var, line)
+    for tuple in pointers:
+        var = tuple['varName']
+        line = tuple['lineNumber']
+        tajs.addCombo(var, line)
+        safe.addCombo(var, line)
 
+    # bootSafe()
     tajs.mkComboFile()
     safe.mkComboFile()
     # make API call to tajs and safe
@@ -220,7 +230,7 @@ def main(testFile, tajsOn, safeOn):
         # safeOutput = safe.runWithRecencyAbstraction()
 
     # output to YAML
-    outputYAML(files, tajsOutput, safeOutput)
+    outputYAML(config, tajsOutput, safeOutput)
 
 
 if __name__ == "__main__":
@@ -233,5 +243,5 @@ if __name__ == "__main__":
     parser.add_argument(
         "--safe", help="enable analysis with safe", action="store_true")
     args = parser.parse_args()
-    safeConfig = SafeConfig()
+    safeConfig = SafeConfig()  # Use as global variable
     main(args.test, args.tajs, args.safe)

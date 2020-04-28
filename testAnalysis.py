@@ -16,18 +16,16 @@ def generatePtsOfInterest(file):
 
 def generateConfigFile(ptrs, testFile, tajsOn, safeOn):
 
-    configDict = {'files': []}
+    # configDict = {'file': []}
+    configDict = {}
     configDict['tajs'] = tajsOn
     configDict['safe'] = safeOn
-    configDict['files'].append({
-        "name": testFile,
-    })
-    currentFile = configDict['files'][0]
-    currentFile['pointers'] = []
+    configDict["name"] = testFile
+    configDict["pointers"] = []
 
     for key, value in ptrs.items():
         ptrName, line = key.split('-')
-        currentFile['pointers'].append({
+        configDict['pointers'].append({
             "varName": ptrName,
             "lineNumber": line,
             "pointsToSize": value
