@@ -6,7 +6,7 @@ import argparse
 import ast
 import concurrent.futures
 from multiprocessing import Lock
-from itertools import repeat
+import time
 # yaml, json, md file handlers
 import yaml
 import json
@@ -207,12 +207,18 @@ def bootSafe(config):
 
     callSiteSensOptions = [
         item for sublist in callSiteSensOptions for item in sublist]
+
+    # options = safeConfig.makeHeapBuilderCombos()
+    start = time.perf_counter()
     with concurrent.futures.ThreadPoolExecutor() as executor:
         results = [executor.submit(runSafe, opt, config)
                    for opt in callSiteSensOptions]
 
         for future in concurrent.futures.as_completed(results):
             print(future.result())
+
+    end = time.perf_counter()
+    print(f'Finished in {end-start} seconds')
 
 
 def main(testFile, tajsOn, safeOn):

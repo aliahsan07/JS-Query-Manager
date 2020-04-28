@@ -53,7 +53,8 @@ class Safe(Analysis):
         if pipeOutput == 'Exception':
             print("Safe didn't terminate, resulted in exception")
             return
-        return readToolOutput(safe=True)
+        return f"Processing Done for callSiteSen:{self.callsiteSensitivity}, loopIter:{self.loopIter} and loopDepth:{self.loopDepth}"
+        # return readToolOutput(safe=True)
 
     def __str__(self):
         return f'Test File: {self.analysisFile}, pointers: {self.tuples}, callSite: {self.callsiteSensitivity}, loopIter: {self.loopIter}, loopDepth: {self.loopDepth}'

@@ -26,10 +26,10 @@ class SafeConfig:
         loopDepthOptions = [0, 1, 2, 3, 5, 7, 10, 15, 20, 50]
         loopIterOptions = [0, 1, 2, 10, 50, 100, 200, 500, 100, 10000]
 
+        options = []
+
         for i in callSiteOptions:
             for j in loopDepthOptions:
                 for k in loopIterOptions:
-                    # invoke with every option
-
-                    # store and compute result
-                    print(i, j, k)
+                    options.append((i, j, k))
+                    return options
