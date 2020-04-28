@@ -3,13 +3,16 @@ from subprocess import Popen, PIPE, STDOUT
 import ast
 import yaml
 import json
+from mdutils import MdUtils
 import os
+import os.path
 import sys
 from classes.TAJS import TAJS
 from classes.Safe import Safe
 from utils.StringUtils import parseKeys
 from testAnalysis import generatePtsOfInterest, generateConfigFile
 from configs.safeConfig import SafeConfig
+from utils.FileUtils import makeNewFileName
 
 
 def comparePrecision(actualSetLen, outputSet):
@@ -62,6 +65,49 @@ def writeTAJStoYAML(tajsOutput, jsonObj):
     return jsonObj
 
 
+def outputSafeStats(safeConfig, globalConfig, safeOutput):
+    fileName = makeNewFileName()
+    # output stats to out file
+    # hacky, fix this
+    analysisFile = globalConfig['files'][0]
+    analysisFileName = analysisFile['filename']
+    mdFile = MdUtils(file_name=fileName,
+                     title="File Analyzed: " + analysisFileName)
+    callSiteSen = str(safeConfig['callSiteSensitivity'])
+    mdFile.new_paragraph('Call-Site Sensitivity: ' +
+                         callSiteSen, bold_italics_code='bi', color='purple')
+    mdFile.new_paragraph(
+        'Loop Depth: ' + str(safeConfig['loopDepth']), bold_italics_code='bi', color='purple')
+    mdFile.new_paragraph(
+        'Loop Iter: ' + str(safeConfig['loopIter']), bold_italics_code='bi', color='purple')
+
+    mdFile.new_header(level=3, title="Analysis results")
+    for pointer in analysisFile['pointers']:
+        varName = pointer['varname']
+        lineNumber = pointer['lineNumber']
+        groundTruth = pointer['groundTruth']
+        if '.' in varName:
+            varName = varName.split('.')[-1]
+        key = analysisFileName + '-' + varName + \
+            '-' + str(pointer['lineNumber'])
+        pointsTo = []
+        try:
+            pointsTo = ast.literal_eval(safeOutput[key])
+        except:
+            pass
+        mdFile.new_paragraph('variable name: ' + varName)
+        mdFile.new_paragraph('line number: ' + str(lineNumber))
+        mdFile.new_paragraph('Ground Truth: ' + str(groundTruth))
+        safeResult = pointer['safe']
+        mdFile.new_paragraph('points-to set: ' + str(safeResult['output']))
+        mdFile.new_paragraph('points-to set size: ' +
+                             str(safeResult['pointsToSize']))
+        mdFile.new_paragraph('precision: ' + str(safeResult['precision']))
+
+        mdFile.new_paragraph('-------------------------------------')
+    mdFile.create_md_file()
+
+
 def writeSafetoYAML(safeOutput, jsonObj):
 
     refinedOutput = {}
@@ -88,6 +134,8 @@ def writeSafetoYAML(safeOutput, jsonObj):
                 pointers['groundTruth'], pointsTo)
             pointers['safe']['pointsToSize'] = len(pointsTo)
 
+    c = {'callSiteSensitivity': 1, 'loopIter': 100, 'loopDepth': 10}
+    outputSafeStats(c, jsonObj, refinedOutput)
     return jsonObj
 
 
