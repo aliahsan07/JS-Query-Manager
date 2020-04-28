@@ -4,7 +4,9 @@ import os.path
 import sys
 import argparse
 import ast
-import multiprocessing
+import concurrent.futures
+from multiprocessing import Lock
+from itertools import repeat
 # yaml, json, md file handlers
 import yaml
 import json
@@ -12,11 +14,12 @@ from mdutils import MdUtils
 # Classes
 from classes.TAJS import TAJS
 from classes.Safe import Safe
+from classes.DataStore import DataStore
 # Utils
 from utils.StringUtils import parseKeys
 from testAnalysis import generatePtsOfInterest, generateConfigFile
 from configs.safeConfig import SafeConfig
-from utils.FileUtils import makeNewFileName
+from utils.FileUtils import makeNewFileName, countFiles, cleanup
 
 
 def comparePrecision(actualSetLen, outputSet):
@@ -70,8 +73,6 @@ def writeTAJStoYAML(tajsOutput, jsonObj):
 
 def outputSafeStats(globalConfig, safeOutput):
     fileName = makeNewFileName()
-    # output stats to out file
-    # hacky, fix this
     analysisFileName = globalConfig['filename']
     mdFile = MdUtils(file_name=fileName,
                      title="File Analyzed: " + analysisFileName)
@@ -174,21 +175,44 @@ def deleteOldFiles():
     except:
         pass
 
+    try:
+        cleanup()
+    except:
+        pass
 
-def loadSafe(callSiteSen):
-    safe = Safe(callsiteSensitivity=callSiteSen)
+
+def runSafe(callSiteSen, config):
+    safe = Safe(callsiteSensitivity=callSiteSen,
+                loopDepth=safeConfig.loopDepth, loopIter=safeConfig.loopIter)
+    safe.selectFile(config['name'])
+
+    mutex.acquire()
+    fileNumber = countFiles()
+    safe.setFileNumber(fileNumber)
+    fileName = makeNewFileName()
+    mutex.release()
+
+    analysisFileName = config['name']
+    mdFile = MdUtils(file_name=fileName,
+                     title="File Analyzed: " + analysisFileName)
+    mdFile.create_md_file()
+    output = safe.run()
+    return output
 
 
-def bootSafe():
+def bootSafe(config):
     percentages = safeConfig.options
     callSiteSensOptions = [safeConfig.calculateCallSiteSen(
         percentage) for percentage in percentages]
 
-    processes = []
-    print(callSiteSensOptions)
-    # for opt in range(callSiteSensOptions):
-    # first = opt[0]
-    # second = opt[1]
+    callSiteSensOptions = [
+        item for sublist in callSiteSensOptions for item in sublist]
+    with concurrent.futures.ThreadPoolExecutor() as executor:
+        results = [executor.submit(runSafe, opt, config)
+                   for opt in callSiteSensOptions]
+
+        for future in concurrent.futures.as_completed(results):
+            print(future.result())
 
 
 def main(testFile, tajsOn, safeOn):
@@ -202,21 +226,21 @@ def main(testFile, tajsOn, safeOn):
     # parse and make API calls
     tajs = TAJS()
     # safe = Safe()
-    safe = Safe(callsiteSensitivity=0, loopDepth=0, loopIter=0)
-    bootSafe()
+    # safe = Safe(callsiteSensitivity=0, loopDepth=0, loopIter=0)
+
     tajs.selectFile(config['name'])
-    safe.selectFile(config['name'])  # change this
+    # safe.selectFile(config['name'])  # change this
     pointers = config['pointers']
 
     for tuple in pointers:
         var = tuple['varName']
         line = tuple['lineNumber']
-        tajs.addCombo(var, line)
-        safe.addCombo(var, line)
+        # tajs.addCombo(var, line)
+        dataStore.appendTuple(var, line)
 
-    # bootSafe()
-    tajs.mkComboFile()
-    safe.mkComboFile()
+    dataStore.createPointersDataSet()
+    bootSafe(config)
+
     # make API call to tajs and safe
     tajsOutput = None
     if config['tajs']:
@@ -225,9 +249,9 @@ def main(testFile, tajsOn, safeOn):
         # tajsOutput = tajs.runWithDeterminacyAndUneval()
         #tajsOutput = tajs.runBlendedAnalysis()
     safeOutput = None
-    if config['safe']:
-        safeOutput = safe.run()
-        # safeOutput = safe.runWithRecencyAbstraction()
+    # if config['safe']:
+    #     safeOutput = safe.run()
+    # safeOutput = safe.runWithRecencyAbstraction()
 
     # output to YAML
     outputYAML(config, tajsOutput, safeOutput)
@@ -244,4 +268,6 @@ if __name__ == "__main__":
         "--safe", help="enable analysis with safe", action="store_true")
     args = parser.parse_args()
     safeConfig = SafeConfig()  # Use as global variable
+    dataStore = DataStore()
+    mutex = Lock()
     main(args.test, args.tajs, args.safe)

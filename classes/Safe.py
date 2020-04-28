@@ -12,6 +12,11 @@ class Safe(Analysis):
         self.loopDepth = loopDepth
         self.loopIter = loopIter
         self.callsiteSensitivity = callsiteSensitivity
+        self.fileNumber = None
+
+    def setFileNumber(self, num):
+        self.fileNumber = num + 1
+        self.baseCommand.append('-analyzer:fileCount=' + str(self.fileNumber))
 
     def runWithRecencyAbstraction(self):
         return self.run('-heapBuilder:recency')
@@ -49,3 +54,6 @@ class Safe(Analysis):
             print("Safe didn't terminate, resulted in exception")
             return
         return readToolOutput(safe=True)
+
+    def __str__(self):
+        return f'Test File: {self.analysisFile}, pointers: {self.tuples}, callSite: {self.callsiteSensitivity}, loopIter: {self.loopIter}, loopDepth: {self.loopDepth}'

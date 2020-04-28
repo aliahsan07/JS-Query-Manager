@@ -19,7 +19,7 @@ class SafeConfig:
 
         if lower < 0:
             lower = 0
-        return (int(upper), int(lower))
+        return [int(upper), int(lower)]
 
     def makeHeapBuilderCombos(self):
         callSiteOptions = [0, 1, 2, 5, 10, 12, 20, 50, 100, 500]

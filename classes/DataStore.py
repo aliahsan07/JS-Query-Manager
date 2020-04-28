@@ -1,0 +1,15 @@
+class DataStore():
+
+    def __init__(self, tuples=[], outputFile="data.txt"):
+        self.tuples = tuples
+        self.outputFile = outputFile
+
+    def createPointersDataSet(self):
+        f = open(self.outputFile, "w")
+        for var, line in self.tuples:
+            if '.' in var:
+                var = var.split('.')[-1]
+            f.write(var + " " + str(line) + "\n")
+
+    def appendTuple(self, var, line):
+        self.tuples.append((var, line))
