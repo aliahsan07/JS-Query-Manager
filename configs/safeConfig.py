@@ -32,4 +32,5 @@ class SafeConfig:
             for j in loopDepthOptions:
                 for k in loopIterOptions:
                     options.append((i, j, k))
-                    return options
+        print(len(options))
+        return options

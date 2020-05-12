@@ -181,9 +181,9 @@ def deleteOldFiles():
         pass
 
 
-def runSafe(callSiteSen, config, ptrsList):
+def runSafe(callSiteSen, loopDepth, loopIter, config, ptrsList):
     safe = Safe(callsiteSensitivity=callSiteSen,
-                loopDepth=safeConfig.loopDepth, loopIter=safeConfig.loopIter, ptrs=ptrsList)
+                loopDepth=loopDepth, loopIter=loopIter, ptrs=ptrsList)
     safe.selectFile(config['name'])
 
     analysisFileName = config['name']
@@ -202,11 +202,13 @@ def bootSafe(config, ptrsList):
     callSiteSensOptions = [
         item for sublist in callSiteSensOptions for item in sublist]
 
-    # options = safeConfig.makeHeapBuilderCombos()
+    options = safeConfig.makeHeapBuilderCombos()
     start = time.perf_counter()
     with concurrent.futures.ThreadPoolExecutor() as executor:
-        results = [executor.submit(runSafe, opt, config, ptrsList)
-                   for opt in callSiteSensOptions]
+        # results = [executor.submit(runSafe, opt, safeConfig.loopDepth, safeConfig.loopIter,
+        #    config, ptrsList) for opt in callSiteSensOptions]
+        results = [executor.submit(runSafe, opt[0], opt[1], opt[2], config, ptrsList)
+                   for opt in options]  # for all variants
 
         for future in concurrent.futures.as_completed(results):
             print(future.result())
@@ -248,7 +250,7 @@ def main(testFile, tajsOn, safeOn):
         tajsOutput = tajs.run()
         # tajsOutput = tajs.runWithDeterminacy()
         # tajsOutput = tajs.runWithDeterminacyAndUneval()
-        #tajsOutput = tajs.runBlendedAnalysis()
+        # tajsOutput = tajs.runBlendedAnalysis()
     safeOutput = None
     # if config['safe']:
     #     safeOutput = safe.run()
