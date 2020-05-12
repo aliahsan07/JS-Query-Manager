@@ -181,26 +181,20 @@ def deleteOldFiles():
         pass
 
 
-def runSafe(callSiteSen, config):
+def runSafe(callSiteSen, config, ptrsList):
     safe = Safe(callsiteSensitivity=callSiteSen,
-                loopDepth=safeConfig.loopDepth, loopIter=safeConfig.loopIter)
+                loopDepth=safeConfig.loopDepth, loopIter=safeConfig.loopIter, ptrs=ptrsList)
     safe.selectFile(config['name'])
 
-    mutex.acquire()
-    fileNumber = countFiles()
-    safe.setFileNumber(fileNumber)
-    fileName = makeNewFileName()
-    mutex.release()
-
     analysisFileName = config['name']
-    mdFile = MdUtils(file_name=fileName,
-                     title="File Analyzed: " + analysisFileName)
-    mdFile.create_md_file()
+    # mdFile = MdUtils(file_name=fileName,
+    #                  title="File Analyzed: " + analysisFileName)
+    # mdFile.create_md_file()
     output = safe.run()
     return output
 
 
-def bootSafe(config):
+def bootSafe(config, ptrsList):
     percentages = safeConfig.options
     callSiteSensOptions = [safeConfig.calculateCallSiteSen(
         percentage) for percentage in percentages]
@@ -211,7 +205,7 @@ def bootSafe(config):
     # options = safeConfig.makeHeapBuilderCombos()
     start = time.perf_counter()
     with concurrent.futures.ThreadPoolExecutor() as executor:
-        results = [executor.submit(runSafe, opt, config)
+        results = [executor.submit(runSafe, opt, config, ptrsList)
                    for opt in callSiteSensOptions]
 
         for future in concurrent.futures.as_completed(results):
@@ -232,6 +226,7 @@ def main(testFile, tajsOn, safeOn):
     # parse and make API calls
     tajs = TAJS()
     # safe = Safe()
+    # safe.selectFile(config['name'])
     # safe = Safe(callsiteSensitivity=0, loopDepth=0, loopIter=0)
 
     tajs.selectFile(config['name'])
@@ -241,11 +236,11 @@ def main(testFile, tajsOn, safeOn):
     for tuple in pointers:
         var = tuple['varName']
         line = tuple['lineNumber']
-        # tajs.addCombo(var, line)
         dataStore.appendTuple(var, line)
 
-    dataStore.createPointersDataSet()
-    bootSafe(config)
+    pointersList = dataStore.createPointersDataSet()
+    # safe.setPointers(pointersList)
+    bootSafe(config, pointersList)
 
     # make API call to tajs and safe
     tajsOutput = None
@@ -260,6 +255,7 @@ def main(testFile, tajsOn, safeOn):
     # safeOutput = safe.runWithRecencyAbstraction()
 
     # output to YAML
+    # safeOutput = safe.run()
     outputYAML(config, tajsOutput, safeOutput)
 
 
