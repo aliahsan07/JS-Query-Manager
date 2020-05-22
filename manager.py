@@ -20,6 +20,7 @@ from utils.StringUtils import parseKeys
 from testAnalysis import generatePtsOfInterest, generateConfigFile
 from configs.safeConfig import SafeConfig
 from utils.FileUtils import makeNewFileName, countFiles, cleanup
+from utils.API.SafeAPI import copyFilesToSafeServer
 
 
 def comparePrecision(actualSetLen, outputSet):
@@ -39,8 +40,6 @@ def loadConfig():
         config = json.load(f)
 
     return config
-
-# writeTAJStoYAML needs refining
 
 
 def writeTAJStoYAML(tajsOutput, jsonObj):
@@ -69,46 +68,6 @@ def writeTAJStoYAML(tajsOutput, jsonObj):
         pointers['tajs']['pointsToSize'] = len(pointsTo)
 
     return jsonObj
-
-
-def outputSafeStats(globalConfig, safeOutput):
-    fileName = makeNewFileName()
-    analysisFileName = globalConfig['filename']
-    mdFile = MdUtils(file_name=fileName,
-                     title="File Analyzed: " + analysisFileName)
-    callSiteSen = str(safeConfig.callSiteSensitivity)
-    mdFile.new_paragraph('Call-Site Sensitivity: ' +
-                         callSiteSen, bold_italics_code='bi', color='purple')
-    mdFile.new_paragraph(
-        'Loop Depth: ' + str(safeConfig.loopDepth), bold_italics_code='bi', color='purple')
-    mdFile.new_paragraph(
-        'Loop Iter: ' + str(safeConfig.loopIter), bold_italics_code='bi', color='purple')
-
-    mdFile.new_header(level=3, title="Analysis results")
-    for pointer in globalConfig['pointers']:
-        varName = pointer['varname']
-        lineNumber = pointer['lineNumber']
-        groundTruth = pointer['groundTruth']
-        if '.' in varName:
-            varName = varName.split('.')[-1]
-        key = analysisFileName + '-' + varName + \
-            '-' + str(pointer['lineNumber'])
-        pointsTo = []
-        try:
-            pointsTo = ast.literal_eval(safeOutput[key])
-        except:
-            pass
-        mdFile.new_paragraph('variable name: ' + varName)
-        mdFile.new_paragraph('line number: ' + str(lineNumber))
-        mdFile.new_paragraph('Ground Truth: ' + str(groundTruth))
-        safeResult = pointer['safe']
-        mdFile.new_paragraph('points-to set: ' + str(safeResult['output']))
-        mdFile.new_paragraph('points-to set size: ' +
-                             str(safeResult['pointsToSize']))
-        mdFile.new_paragraph('precision: ' + str(safeResult['precision']))
-
-        mdFile.new_paragraph('-------------------------------------')
-    mdFile.create_md_file()
 
 
 def writeSafetoYAML(safeOutput, jsonObj):
@@ -164,32 +123,10 @@ def outputYAML(config, tajsOutput, safeOutput):
         data = yaml.dump(final, f)
 
 
-def deleteOldFiles():
-    try:
-        os.remove("output.json")
-    except:
-        pass
-
-    try:
-        os.remove("safeOutput.json")
-    except:
-        pass
-
-    try:
-        cleanup()
-    except:
-        pass
-
-
 def runSafe(callSiteSen, loopDepth, loopIter, config, ptrsList):
     safe = Safe(callsiteSensitivity=callSiteSen,
                 loopDepth=loopDepth, loopIter=loopIter, ptrs=ptrsList)
     safe.selectFile(config['name'])
-
-    analysisFileName = config['name']
-    # mdFile = MdUtils(file_name=fileName,
-    #                  title="File Analyzed: " + analysisFileName)
-    # mdFile.create_md_file()
     output = safe.run()
     return output
 
@@ -203,12 +140,17 @@ def bootSafe(config, ptrsList):
         item for sublist in callSiteSensOptions for item in sublist]
 
     options = safeConfig.makeHeapBuilderCombos()
+    fileName = config['name']
+    resp = copyFilesToSafeServer(fileName, ptrsList)
+    if not resp:
+        print("Encountered error in sending files to SAFE Server. Exiting!!!")
+        return
     start = time.perf_counter()
     with concurrent.futures.ThreadPoolExecutor() as executor:
-        # results = [executor.submit(runSafe, opt, safeConfig.loopDepth, safeConfig.loopIter,
-        #    config, ptrsList) for opt in callSiteSensOptions]
-        results = [executor.submit(runSafe, opt[0], opt[1], opt[2], config, ptrsList)
-                   for opt in options]  # for all variants
+        results = [executor.submit(runSafe, opt, safeConfig.loopDepth, safeConfig.loopIter,
+                                   config, ptrsList) for opt in callSiteSensOptions]
+    #     # results = [executor.submit(runSafe, opt[0], opt[1], opt[2], config, ptrsList)
+    #     #            for opt in options]  # for all variants
 
         for future in concurrent.futures.as_completed(results):
             print(future.result())
@@ -223,17 +165,11 @@ def main(testFile, tajsOn, safeOn):
     generateConfigFile(pointers, testFile, tajsOn, safeOn)
     # load config
     config = loadConfig()
-    deleteOldFiles()
+    pointers = config['pointers']
 
     # parse and make API calls
     tajs = TAJS()
-    # safe = Safe()
-    # safe.selectFile(config['name'])
-    # safe = Safe(callsiteSensitivity=0, loopDepth=0, loopIter=0)
-
     tajs.selectFile(config['name'])
-    # safe.selectFile(config['name'])  # change this
-    pointers = config['pointers']
 
     for tuple in pointers:
         var = tuple['varName']
@@ -241,10 +177,9 @@ def main(testFile, tajsOn, safeOn):
         dataStore.appendTuple(var, line)
 
     pointersList = dataStore.createPointersDataSet()
-    # safe.setPointers(pointersList)
     bootSafe(config, pointersList)
 
-    # make API call to tajs and safe
+    # TODO move TAJS and SAFE to client-server model
     tajsOutput = None
     if config['tajs']:
         tajsOutput = tajs.run()

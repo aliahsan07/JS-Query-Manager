@@ -103,17 +103,15 @@ class Safe(Analysis):
             command.append('-heapBuilder:loopIter=' + str(self.loopIter))
 
     def constructPayload(self):
-        with open(self.analysisFile) as f:
-            lines = f.readlines()
-        lines = """{}""".format("".join(lines))
+        # with open(self.analysisFile) as f:
+        #     lines = f.readlines()
+        # lines = """{}""".format("".join(lines))
 
         data = {
             "command": "analyze",
-            "ptrSetFile": str(self.ptrs),
             "loopDepth": "-heapBuilder:loopDepth=" + str(self.loopDepth),
             "loopIter": "-heapBuilder:loopIter=" + str(self.loopIter),
             "callSiteSen": "-heapBuilder:callsiteSensitivity=" + str(self.callsiteSensitivity),
-            "analysisFile": lines
         }
 
         return data
@@ -137,8 +135,8 @@ class Safe(Analysis):
         hostname = socket.gethostbyname('localhost')
         connection = http.client.HTTPConnection(hostname + ':8081')
         headers = {'Content-type': 'application/json'}
-        json_foo = json.dumps(data)
-        connection.request('POST', '/safe', json_foo, headers)
+        data = json.dumps(data)
+        connection.request('POST', '/safe', data, headers)
 
         response = connection.getresponse()
         response = response.read().decode()
