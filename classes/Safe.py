@@ -63,7 +63,6 @@ class Safe(Analysis):
                 if not value:
                     value = '" "'
                 # pointsToSize = getResultSize(value)
-                print(value)
                 query = f"""
                     INSERT INTO record(filename, callsite, loopiter, loopdepth, 
                     line_number, variable_name, groundtruth, output, points_to_size)

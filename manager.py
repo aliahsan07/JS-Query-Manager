@@ -107,8 +107,9 @@ def outputYAML(filename, tajsOutput, safeOutput):
         final = writeTAJStoYAML(tajsOutput)
     if safeOutput is not None:
         final = writeSafetoYAML(filename)
+    realFileName = filename.split('/')[-1].split('.')[:-1][0]
     print(">>>>> Outputting to output.yaml file <<<<< ")
-    with open('output.yaml', 'w') as f:
+    with open(realFileName + '-output.yaml', 'w') as f:
         data = yaml.dump(final, f)
 
 
@@ -136,10 +137,12 @@ def bootSafe(config, ptrsList, groundTruth):
         return
     start = time.perf_counter()
     with concurrent.futures.ThreadPoolExecutor() as executor:
-        results = [executor.submit(runSafe, opt, safeConfig.loopDepth, safeConfig.loopIter,
-                                   config, ptrsList, groundTruth) for opt in callSiteSensOptions]
-    #     # results = [executor.submit(runSafe, opt[0], opt[1], opt[2], config, ptrsList, groundTruth)
-    #     #            for opt in options]  # for all variants
+        # results = [executor.submit(
+        #     runSafe, 20, 10, 100, config, ptrsList, groundTruth)]
+        # results = [executor.submit(runSafe, opt, safeConfig.loopDepth, safeConfig.loopIter,
+        #                            config, ptrsList, groundTruth) for opt in callSiteSensOptions]
+        results = [executor.submit(runSafe, opt[0], opt[1], opt[2], config, ptrsList, groundTruth)
+                   for opt in options]  # for all variants
 
         for future in concurrent.futures.as_completed(results):
             print(future.result())
