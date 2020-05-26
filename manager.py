@@ -144,8 +144,11 @@ def bootSafe(config, ptrsList, groundTruth):
         results = [executor.submit(runSafe, opt[0], opt[1], opt[2], config, ptrsList, groundTruth)
                    for opt in options]  # for all variants
 
-        for future in concurrent.futures.as_completed(results):
-            print(future.result())
+        for future in concurrent.futures.as_completed(results, timeout=5):
+            try:
+                print(future.result())
+            except concurrent.futures.TimeoutError:
+                print("this took too long...")
 
     end = time.perf_counter()
     print(f'Finished in {end-start} seconds')
