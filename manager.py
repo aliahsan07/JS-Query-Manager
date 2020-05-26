@@ -137,18 +137,18 @@ def bootSafe(config, ptrsList, groundTruth):
         return
     start = time.perf_counter()
     with concurrent.futures.ThreadPoolExecutor() as executor:
-        # results = [executor.submit(
-        #     runSafe, 20, 10, 100, config, ptrsList, groundTruth)]
+        results = [executor.submit(
+            runSafe, 20, 10, 100, config, ptrsList, groundTruth)]
         # results = [executor.submit(runSafe, opt, safeConfig.loopDepth, safeConfig.loopIter,
         #                            config, ptrsList, groundTruth) for opt in callSiteSensOptions]
-        results = [executor.submit(runSafe, opt[0], opt[1], opt[2], config, ptrsList, groundTruth)
-                   for opt in options]  # for all variants
+        # results = [executor.submit(runSafe, opt[0], opt[1], opt[2], config, ptrsList, groundTruth)
+        #            for opt in options]  # for all variants
 
-        for future in concurrent.futures.as_completed(results, timeout=5):
-            try:
+        try:
+            for future in concurrent.futures.as_completed(results, timeout=5):
                 print(future.result())
-            except concurrent.futures.TimeoutError:
-                print("this took too long...")
+        except concurrent.futures.TimeoutError:
+            print("this took too long...")
 
     end = time.perf_counter()
     print(f'Finished in {end-start} seconds')
