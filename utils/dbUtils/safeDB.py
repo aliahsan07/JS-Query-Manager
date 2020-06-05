@@ -10,7 +10,7 @@ def getSafeDataFromDB(analysisFile):
 
     cursor = conn.cursor()
     cursor.execute(f""" 
-            select variable_name, line_number, callsite, loopdepth, loopiter, groundtruth, output from record 
+            select variable_name, line_number, callsite, loopdepth, loopiter, groundtruth, output, points_to_size from record 
             where filename='{analysisFile}';
         """)
 

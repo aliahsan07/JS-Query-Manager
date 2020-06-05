@@ -49,6 +49,13 @@ class Safe(Analysis):
         sqliteConnection.commit()
         cursor.close()
 
+    def refineValueSet(self, output):
+        splitOnComma = output.split(',')[0::2]
+        size = len(splitOnComma)
+        refinedOutput = list(map(lambda x: x[1:x.find(':')], splitOnComma))
+        refinedOutput = ''.join('"{0}"'.format(w) for w in refinedOutput)
+        return (refinedOutput, size)
+
     def writeToDB(self, output):
         try:
 
@@ -62,15 +69,15 @@ class Safe(Analysis):
                 groundTruth = self.groundTruth[(varName, lineNumber)]
                 if not value:
                     value = '" "'
-                # pointsToSize = getResultSize(value)
+                # refine values here
+                value, pointsToSize = self.refineValueSet(value)
                 query = f"""
                     INSERT INTO record(filename, callsite, loopiter, loopdepth, 
                     line_number, variable_name, groundtruth, output, points_to_size)
                     VALUES
                     ('{self.analysisFile}', {self.callsiteSensitivity}, {self.loopIter}, 
-                    {self.loopDepth}, '{lineNumber}', '{varName}', '{groundTruth}', {value}, 1)
+                    {self.loopDepth}, '{lineNumber}', '{varName}', '{groundTruth}', {value}, {pointsToSize})
                 """
-
                 count = cursor.execute(query)
                 sqliteConnection.commit()
                 print("Record inserted successfully ", cursor.rowcount)

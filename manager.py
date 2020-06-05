@@ -10,7 +10,7 @@ import time
 # yaml, json, md file handlers
 import yaml
 import json
-from mdutils import MdUtils
+import csv
 # Classes
 from classes.TAJS import TAJS
 from classes.Safe import Safe
@@ -71,43 +71,54 @@ def writeTAJStoYAML(tajsOutput, jsonObj):
     return jsonObj
 
 
-def writeSafetoYAML(filename):
+def writeSafetoYAML(filename, outputCSV):
     result = getSafeDataFromDB(filename)
     jsonData = {}
     jsonData['fileName'] = filename
     jsonData['results'] = {}
-    for row in result:
-        varName = row[0]
-        lineNumber = str(row[1])
-        callSite = row[2]
-        loopDepth = row[3]
-        loopIter = row[4]
-        groundTruth = row[5]
-        output = row[6]
-        dictOutput = jsonData['results']
-        if str(varName + " " + lineNumber) not in dictOutput:
-            # hacky, make this reusable and elegant
-            dictOutput[varName + " " + lineNumber] = []
 
-        dictOutput[varName + " " + lineNumber].append(
-            {
-                'callSiteSensitivity': callSite,
-                'loopDepth': loopDepth,
-                'loopIter': loopIter,
-                'output': output
-            }
-        )
+    with open(outputCSV, mode='w') as csvFile:
+        writer = csv.writer(csvFile, delimiter=',',
+                            quotechar='"', quoting=csv.QUOTE_MINIMAL)
+        writer.writerow(['Variable', 'Line', 'CallSite', 'LoopDepth',
+                         'LoopIter', 'GroundTruth', 'Output', 'Points to Size'])
+        for row in result:
+            varName = row[0]
+            lineNumber = str(row[1])
+            callSite = row[2]
+            loopDepth = row[3]
+            loopIter = row[4]
+            groundTruth = row[5]
+            output = row[6]
+            pointsToSize = row[7]
+            dictOutput = jsonData['results']
+            if str(varName + " " + lineNumber) not in dictOutput:
+                # hacky, make this reusable and elegant
+                dictOutput[varName + " " + lineNumber] = []
+
+            writer.writerow([varName, lineNumber, callSite, loopDepth,
+                             loopIter, groundTruth, output, pointsToSize])
+            dictOutput[varName + " " + lineNumber].append(
+                {
+                    'callSiteSensitivity': callSite,
+                    'loopDepth': loopDepth,
+                    'loopIter': loopIter,
+                    'output': output,
+                    'pointsToSize': pointsToSize
+
+                }
+            )
 
     return jsonData
 
 
 def outputYAML(filename, tajsOutput, safeOutput):
-
+    realFileName = filename.split('/')[-1].split('.')[:-1][0]
+    outputCSV = realFileName + '-output.csv'
     if tajsOutput is not None:
         final = writeTAJStoYAML(tajsOutput)
     if safeOutput is not None:
-        final = writeSafetoYAML(filename)
-    realFileName = filename.split('/')[-1].split('.')[:-1][0]
+        final = writeSafetoYAML(filename, outputCSV)
     print(">>>>> Outputting to output.yaml file <<<<< ")
     with open(realFileName + '-output.yaml', 'w') as f:
         data = yaml.dump(final, f)
@@ -137,12 +148,12 @@ def bootSafe(config, ptrsList, groundTruth):
         return
     start = time.perf_counter()
     with concurrent.futures.ThreadPoolExecutor() as executor:
-        results = [executor.submit(
-            runSafe, 20, 10, 100, config, ptrsList, groundTruth)]
+        # results = [executor.submit(
+        #     runSafe, 12, 10, 1000, config, ptrsList, groundTruth)]
         # results = [executor.submit(runSafe, opt, safeConfig.loopDepth, safeConfig.loopIter,
-        #                            config, ptrsList, groundTruth) for opt in callSiteSensOptions]
-        # results = [executor.submit(runSafe, opt[0], opt[1], opt[2], config, ptrsList, groundTruth)
-        #            for opt in options]  # for all variants
+        #    config, ptrsList, groundTruth) for opt in callSiteSensOptions]
+        results = [executor.submit(runSafe, opt[0], opt[1], opt[2], config, ptrsList, groundTruth)
+                   for opt in options]  # for all variants
 
         try:
             for future in concurrent.futures.as_completed(results, timeout=5):
