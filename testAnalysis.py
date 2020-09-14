@@ -3,7 +3,7 @@ import json
 import re
 
 
-def generatePtsOfInterest(file):
+def loadPointersOfInterest(file):
     with open(file, 'r') as content_file:
         content = content_file.read()
 
