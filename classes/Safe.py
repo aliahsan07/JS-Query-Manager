@@ -5,7 +5,7 @@ from utils.readTool import readToolOutput
 
 class Safe(Analysis):
 
-    def __init__(self, t=[], loopDepth=None, loopIter=None, callsiteSensitivity=None):
+    def __init__(self, t=[], loopDepth=10, loopIter=100, callsiteSensitivity=20):
         super().__init__(t)
         self.baseCommand = ['safe', 'analyze',
                             '-analyzer:ptrSetFile=' + self.outputFile]

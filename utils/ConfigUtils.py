@@ -3,6 +3,13 @@ import json
 import re
 
 
+def loadConfig():
+    with open('config.json', 'r') as f:
+        config = json.load(f)
+
+    return config
+
+
 def loadPointersOfInterest(file):
     with open(file, 'r') as content_file:
         content = content_file.read()

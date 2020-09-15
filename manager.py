@@ -4,37 +4,53 @@ import ast
 import json
 import os
 import sys
+import time
 from classes.TAJS import TAJS
 from classes.Safe import Safe
 from utils.FileUtils import deleteOldFiles, outputToFile
-from testAnalysis import loadPointersOfInterest, generateConfigFile
+from utils.ConfigUtils import loadPointersOfInterest, generateConfigFile, loadConfig
 from configs.safeConfig import SafeConfig
 
 
-def loadConfig():
-
-    with open('config.json', 'r') as f:
-        config = json.load(f)
-
-    return config
+def runTool(tajsOn=False, safeOn=False, tajs=None, safe=None):
+    output = None
+    if tajsOn:
+        tic = time.perf_counter()
+        output = tajs.run()
+        toc = time.perf_counter()
+        print(f"TAJS performed analysis in {toc - tic:0.4f} seconds")
+        return output
+        # tajsOutput = tajs.runWithDeterminacy()
+        # tajsOutput = tajs.runWithDeterminacyAndUneval()
+        #tajsOutput = tajs.runBlendedAnalysis()
+    elif safeOn:
+        tic = time.perf_counter()
+        output = safe.run()
+        toc = time.perf_counter()
+        print(f"Safe performed analysis in {toc - tic:0.4f} seconds")
+        # safeOutput = safe.runWithRecencyAbstraction()
+        return output
 
 
 def main(testFile, tajsOn, safeOn):
 
+    # load pointers from the test file
     pointers = loadPointersOfInterest(testFile)
+    # flush configuration to config.json
     generateConfigFile(pointers, testFile, tajsOn, safeOn)
 
-    # load config
+    # load configuration
     config = loadConfig()
     deleteOldFiles()
 
-    # parse and make API calls
+    # load all files. Its a nested object that contains all the ptrs we need
     files = config['files']
 
+    # TODO: depending on which object is selected load its object
     tajs = TAJS()
-    # safe = Safe()
-    safe = Safe(callsiteSensitivity=0, loopDepth=0, loopIter=0)
+    safe = Safe()
 
+    # add file, pointers to each tool
     for file in files:
         tajs.selectFile(file['name'])
         safe.selectFile(file['name'])
@@ -46,21 +62,16 @@ def main(testFile, tajsOn, safeOn):
             tajs.addCombo(var, line)
             safe.addCombo(var, line)
 
+    # outputs the pointers to data.txt
     tajs.mkComboFile()
     safe.mkComboFile()
 
     # make API call to tajs and safe
-    tajsOutput = None
-
-    if config['tajs']:
-        tajsOutput = tajs.run()
-        # tajsOutput = tajs.runWithDeterminacy()
-        # tajsOutput = tajs.runWithDeterminacyAndUneval()
-        #tajsOutput = tajs.runBlendedAnalysis()
-    safeOutput = None
-    if config['safe']:
-        safeOutput = safe.run()
-        # safeOutput = safe.runWithRecencyAbstraction()
+    tajsOutput, safeOutput = None, None
+    if tajsOn:
+        tajsOutput = runTool(tajsOn=True, tajs=tajs)
+    if safeOn:
+        safeOutput = runTool(safeOn=True, safe=safe)
 
     # output to YAML
     outputToFile(files, tajsOutput, safeOutput)
@@ -72,9 +83,9 @@ if __name__ == "__main__":
         "--test", help="test file for analysis"
     )
     parser.add_argument(
-        "--tajs", help="enable analysis with tajs", action="store_true")
+        "--tajs", help="perform analysis with tajs", action="store_true")
     parser.add_argument(
-        "--safe", help="enable analysis with safe", action="store_true")
+        "--safe", help="perform analysis with safe", action="store_true")
     args = parser.parse_args()
     safeConfig = SafeConfig()
     main(args.test, args.tajs, args.safe)

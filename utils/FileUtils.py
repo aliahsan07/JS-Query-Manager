@@ -22,6 +22,7 @@ def writeTAJStoYAML(tajsOutput, jsonObj):
         keyAsStr = str(parseKeys(key))
         refinedOutput[keyAsStr] = tajsOutput[key]
 
+    files = jsonObj['files']
     for file in files:
         for pointers in file['pointers']:
             varName = pointers['varname']
