@@ -1,0 +1,12 @@
+files:
+- filename: test-suite/eval/eval-2.js
+  pointers:
+  - groundTruth: 1
+    lineNumber: 7
+    safe:
+      output:
+      - '#1:Sens[(20-CFA(0:1)|LSA[i:10,j:100]())]'
+      pointsToSize: 1
+      precision: 1.0
+      runtime: ' 0.0019'
+    varname: test

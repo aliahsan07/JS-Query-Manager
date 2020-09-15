@@ -1,6 +1,7 @@
 from subprocess import Popen, PIPE, STDOUT
 from classes.Analysis import Analysis
 from utils.readTool import readToolOutput
+import time
 
 
 class Safe(Analysis):
@@ -12,6 +13,7 @@ class Safe(Analysis):
         self.loopDepth = loopDepth
         self.loopIter = loopIter
         self.callsiteSensitivity = callsiteSensitivity
+        self.timeTaken = 0.0
 
     def runWithRecencyAbstraction(self):
         return self.run('-heapBuilder:recency')
@@ -43,7 +45,11 @@ class Safe(Analysis):
         for arg in flags:
             command.append(arg)
         command.append(self.analysisFile)
+        tic = time.perf_counter()
         safeOutput = Popen(command, stdout=PIPE, stderr=STDOUT)
+        toc = time.perf_counter()
+        self.timeTaken = toc - tic
+        print(f"Safe performed analysis in {toc - tic:0.4f} seconds")
         pipeOutput = safeOutput.communicate()[0][:9].decode()
         if pipeOutput == 'Exception':
             print("Safe didn't terminate, resulted in exception")

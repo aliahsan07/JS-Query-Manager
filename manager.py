@@ -4,7 +4,7 @@ import ast
 import json
 import os
 import sys
-import time
+import yaml
 from classes.TAJS import TAJS
 from classes.Safe import Safe
 from utils.FileUtils import deleteOldFiles, outputToFile
@@ -15,25 +15,18 @@ from configs.safeConfig import SafeConfig
 def runTool(tajsOn=False, safeOn=False, tajs=None, safe=None):
     output = None
     if tajsOn:
-        tic = time.perf_counter()
         output = tajs.run()
-        toc = time.perf_counter()
-        print(f"TAJS performed analysis in {toc - tic:0.4f} seconds")
         return output
         # tajsOutput = tajs.runWithDeterminacy()
         # tajsOutput = tajs.runWithDeterminacyAndUneval()
         #tajsOutput = tajs.runBlendedAnalysis()
     elif safeOn:
-        tic = time.perf_counter()
         output = safe.run()
-        toc = time.perf_counter()
-        print(f"Safe performed analysis in {toc - tic:0.4f} seconds")
         # safeOutput = safe.runWithRecencyAbstraction()
         return output
 
 
-def main(testFile, tajsOn, safeOn):
-
+def run(testFile, tajsOn, safeOn):
     # load pointers from the test file
     pointers = loadPointersOfInterest(testFile)
     # flush configuration to config.json
@@ -74,7 +67,44 @@ def main(testFile, tajsOn, safeOn):
         safeOutput = runTool(safeOn=True, safe=safe)
 
     # output to YAML
-    outputToFile(files, tajsOutput, safeOutput)
+    # add time taken by each tool in one object
+    timers = {
+        'tajsTime': tajs.timeTaken,
+        'safeTime': safe.timeTaken
+    }
+    # output data to yaml file
+    outputToFile(files, tajsOutput, safeOutput, timers)
+
+
+def runAllTestCases(tajsOn, safeOn):
+
+    with open(r'info.yaml') as file:
+        # The FullLoader parameter handles the conversion from YAML
+        # scalar values to Python the dictionary format
+        fileLoaded = yaml.load(file, Loader=yaml.FullLoader)
+
+    testSuite = fileLoaded["tests"]
+
+    for module in testSuite:
+        print("\n")
+        print(f"Running tests for {module}")
+        for test in testSuite[module]:
+            print(f"Testing {test['name']}...")
+            testCase = test['path']
+            run(testCase, tajsOn, safeOn)
+            print(f"\u2713 Succesfully tested {test['name']} ")
+            print("<=========================================================>\n")
+
+
+def main(testFile, tajsOn, safeOn, watch):
+
+    if not tajsOn and not safeOn:
+        raise Exception(
+            "No flags passed for tools to run. Pass either --tajs or --safe or both to run the tools")
+    if watch:
+        runAllTestCases(tajsOn, safeOn)
+    else:
+        run(testFile, tajsOn, safeOn)
 
 
 if __name__ == "__main__":
@@ -86,6 +116,8 @@ if __name__ == "__main__":
         "--tajs", help="perform analysis with tajs", action="store_true")
     parser.add_argument(
         "--safe", help="perform analysis with safe", action="store_true")
+    parser.add_argument(
+        "--watch", help="run on all test cases", action="store_true")
     args = parser.parse_args()
-    safeConfig = SafeConfig()
-    main(args.test, args.tajs, args.safe)
+    # safeConfig = SafeConfig() # TODO
+    main(args.test, args.tajs, args.safe, args.watch)

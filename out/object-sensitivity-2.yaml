@@ -1,0 +1,19 @@
+files:
+- filename: test-suite/object-sensitivity/object-sensitivity-2.js
+  pointers:
+  - groundTruth: 1
+    lineNumber: 24
+    safe:
+      output: []
+      pointsToSize: 0
+      precision: 0
+      runtime: ' 0.0048'
+    varname: f
+  - groundTruth: 1
+    lineNumber: 25
+    safe:
+      output: []
+      pointsToSize: 0
+      precision: 0
+      runtime: ' 0.0048'
+    varname: f

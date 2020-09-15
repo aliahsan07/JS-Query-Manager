@@ -1,0 +1,11 @@
+files:
+- filename: test-suite/closure/closure-2.js
+  pointers:
+  - groundTruth: 2
+    lineNumber: 4
+    safe:
+      output: []
+      pointsToSize: 0
+      precision: 0
+      runtime: ' 0.0021'
+    varname: n

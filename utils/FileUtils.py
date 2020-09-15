@@ -15,14 +15,14 @@ def comparePrecision(actualSetLen, outputSet):
     return precision
 
 
-def writeTAJStoYAML(tajsOutput, jsonObj):
+def writeTAJStoYAML(tajsOutput, cumulativeOutput, runtime=0.0):
 
     refinedOutput = {}
     for key in tajsOutput.keys():
         keyAsStr = str(parseKeys(key))
         refinedOutput[keyAsStr] = tajsOutput[key]
 
-    files = jsonObj['files']
+    files = cumulativeOutput['files']
     for file in files:
         for pointers in file['pointers']:
             varName = pointers['varname']
@@ -36,22 +36,21 @@ def writeTAJStoYAML(tajsOutput, jsonObj):
             except:
                 pass
             pointers['tajs'] = {}
+            pointers['tajs']['runtime'] = f"{runtime: 0.4f}"
             pointers['tajs']['output'] = pointsTo
             pointers['tajs']['precision'] = comparePrecision(
                 pointers['groundTruth'], pointsTo)
             pointers['tajs']['pointsToSize'] = len(pointsTo)
 
-    return jsonObj
 
-
-def writeSafetoYAML(safeOutput, jsonObj):
+def writeSafetoYAML(safeOutput, cumulativeOutput, runtime=0.0):
 
     refinedOutput = {}
     for key in safeOutput.keys():
         keyAsStr = str(parseKeys(key))
         refinedOutput[keyAsStr] = safeOutput[key]
 
-    files = jsonObj['files']
+    files = cumulativeOutput['files']
     for file in files:
         for pointers in file['pointers']:
             varName = pointers['varname']
@@ -63,27 +62,28 @@ def writeSafetoYAML(safeOutput, jsonObj):
             try:
                 pointsTo = ast.literal_eval(refinedOutput[key])
             except:
-                print("why am i here")
                 pass
             pointers['safe'] = {}
+            pointers['safe']['runtime'] = f"{runtime: 0.4f}"
             pointers['safe']['output'] = pointsTo
             pointers['safe']['precision'] = comparePrecision(
                 pointers['groundTruth'], pointsTo)
             pointers['safe']['pointsToSize'] = len(pointsTo)
 
-    return jsonObj
 
-
-def outputToFile(files, tajsOutput, safeOutput):
-    cumulativeOutput = {}
+def outputToFile(initialConfig, tajsOutput, safeOutput, timers):
+    cumulativeOutput = {}  # stores the final state of the analysis after running all tools
 
     cumulativeOutput['files'] = []
-    for file in files:
+    outputFileName = "output.yaml"
+    for file in initialConfig:
         cumulativeOutput['files'].append(
             {
                 'filename': file['name']
             }
         )
+        # TODO get the input filename, handle error cases
+        outputFileName = file['name'].split('/')[-1][:-3]
         cumulativeOutput['files'][-1]['pointers'] = []
         for ptr in file['pointers']:
             cumulativeOutput['files'][-1]['pointers'].append(
@@ -94,14 +94,15 @@ def outputToFile(files, tajsOutput, safeOutput):
                 }
             )
 
-    final = cumulativeOutput
     if tajsOutput is not None:
-        final = writeTAJStoYAML(tajsOutput, final)
+        writeTAJStoYAML(
+            tajsOutput, cumulativeOutput, timers["tajsTime"])
     if safeOutput is not None:
-        final = writeSafetoYAML(safeOutput, final)
+        writeSafetoYAML(
+            safeOutput, cumulativeOutput, timers["safeTime"])
     print(">>>>> Outputting to output.yaml file <<<<< ")
-    with open('output.yaml', 'w') as f:
-        data = yaml.dump(final, f)
+    with open('out/%s.yaml' % outputFileName, 'w') as f:
+        data = yaml.dump(cumulativeOutput, f)
 
 
 def deleteOldFiles():

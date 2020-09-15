@@ -1,0 +1,21 @@
+files:
+- filename: test-suite/aliasing/alias2.js
+  pointers:
+  - groundTruth: 1
+    lineNumber: 3
+    safe:
+      output:
+      - '#-41:Sens[(20-CFA(0:1)|LSA[i:10,j:100]())]'
+      pointsToSize: 1
+      precision: 1.0
+      runtime: ' 0.0021'
+    varname: b
+  - groundTruth: 1
+    lineNumber: 1
+    safe:
+      output:
+      - '#-41:Sens[(20-CFA(0:1)|LSA[i:10,j:100]())]'
+      pointsToSize: 1
+      precision: 1.0
+      runtime: ' 0.0021'
+    varname: a

@@ -3,6 +3,7 @@ from classes.Analysis import Analysis
 from utils.readTool import readToolOutput
 import itertools
 import os
+import time
 
 
 class TAJS(Analysis):
@@ -14,6 +15,7 @@ class TAJS(Analysis):
         self.flags = ["-uneval", "-determinacy",
                       ("-blended-analysis", "-generate-log", "-log-file", "log-file.log"), ("-unsound", "X")]
         self.combinations = []
+        self.timeTaken = 0.0
         for L in range(0, len(self.flags)+1):
             for subset in itertools.combinations(self.flags, L):
                 self.combinations.append(subset)
@@ -42,7 +44,11 @@ class TAJS(Analysis):
                 command.append(arg)
 
         command.append(self.analysisFile)
+        tic = time.perf_counter()
         tajsOutput = Popen(command, stdout=PIPE, stderr=STDOUT)
+        toc = time.perf_counter()
+        self.timeTaken = toc - tic
+        print(f"TAJS performed analysis in {self.timeTaken: 0.4f} seconds")
         pipeOutput = tajsOutput.communicate()[0][:9].decode()
         if pipeOutput == 'Exception':
             print("TAJS didn't terminate, resulted in exception")

@@ -23,4 +23,4 @@ class Analysis:
     def __str__(self):
         tuples = " " if len(self.tuples) == 0 else ", Tuples: ".join(
             str(v) for v in self.tuples)
-        return "{ File: " + self.analysisFile + tuples + " }"
+        return "{ File: " + str(self.analysisFile) + str(tuples) + " }"
