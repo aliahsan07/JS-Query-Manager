@@ -14,22 +14,23 @@ class SafeConfig:
 
     def calculateCallSiteSen(self, option):
 
-        upper = self.callSiteSensitivity * (100 + option)
-        lower = self.callSiteSensitivity * (100 - option)
+        upper = self.callSiteSensitivity * ((100 + option)/100)
+        lower = self.callSiteSensitivity * ((100 - option)/100)
 
         if lower < 0:
             lower = 0
-        return (upper, lower)
+        return [int(upper), int(lower)]
 
     def makeHeapBuilderCombos(self):
         callSiteOptions = [0, 1, 2, 5, 10, 12, 20, 50, 100, 500]
         loopDepthOptions = [0, 1, 2, 3, 5, 7, 10, 15, 20, 50]
         loopIterOptions = [0, 1, 2, 10, 50, 100, 200, 500, 100, 10000]
 
+        options = []
+
         for i in callSiteOptions:
             for j in loopDepthOptions:
                 for k in loopIterOptions:
-                    # invoke with every option
-
-                    # store and compute result
-                    print(i, j, k)
+                    options.append((i, j, k))
+        print(len(options))
+        return options
