@@ -1,0 +1,29 @@
+files:
+- filename: test-suite/flow-sensitivity/flow-sensitivity-1.js
+  pointers:
+  - groundTruth: 1
+    lineNumber: 3
+    safe:
+      output:
+      - '#4:Sens[(20-CFA()|LSA[i:10,j:100]())]'
+      pointsToSize: 1
+      precision: 1.0
+      runtime: ' 0.0020'
+    varname: f
+  - groundTruth: 1
+    lineNumber: 1
+    safe:
+      output:
+      - '#1:Sens[(20-CFA()|LSA[i:10,j:100]())]'
+      pointsToSize: 1
+      precision: 1.0
+      runtime: ' 0.0020'
+    varname: x
+  - groundTruth: 0
+    lineNumber: 3
+    safe:
+      output: []
+      pointsToSize: 0
+      precision: 1.0
+      runtime: ' 0.0020'
+    varname: z

@@ -3,7 +3,14 @@ import json
 import re
 
 
-def generatePtsOfInterest(file):
+def loadConfig():
+    with open('config.json', 'r') as f:
+        config = json.load(f)
+
+    return config
+
+
+def loadPointersOfInterest(file):
     with open(file, 'r') as content_file:
         content = content_file.read()
 
@@ -16,16 +23,18 @@ def generatePtsOfInterest(file):
 
 def generateConfigFile(ptrs, testFile, tajsOn, safeOn):
 
-    # configDict = {'file': []}
-    configDict = {}
+    configDict = {'files': []}
     configDict['tajs'] = tajsOn
     configDict['safe'] = safeOn
-    configDict["name"] = testFile
-    configDict["pointers"] = []
+    configDict['files'].append({
+        "name": testFile,
+    })
+    currentFile = configDict['files'][0]
+    currentFile['pointers'] = []
 
     for key, value in ptrs.items():
         ptrName, line = key.split('-')
-        configDict['pointers'].append({
+        currentFile['pointers'].append({
             "varName": ptrName,
             "lineNumber": line,
             "pointsToSize": value

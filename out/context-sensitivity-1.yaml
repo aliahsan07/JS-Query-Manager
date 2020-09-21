@@ -1,0 +1,21 @@
+files:
+- filename: test-suite/context-sensitivity/context-sensitivity-1.js
+  pointers:
+  - groundTruth: 1
+    lineNumber: 4
+    safe:
+      output:
+      - '#4:Sens[(20-CFA()|LSA[i:10,j:100]())]'
+      pointsToSize: 1
+      precision: 1.0
+      runtime: ' 0.0021'
+    varname: a
+  - groundTruth: 1
+    lineNumber: 5
+    safe:
+      output:
+      - '#8:Sens[(20-CFA()|LSA[i:10,j:100]())]'
+      pointsToSize: 1
+      precision: 1.0
+      runtime: ' 0.0021'
+    varname: d

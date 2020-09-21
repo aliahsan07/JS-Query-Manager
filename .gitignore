@@ -3,5 +3,6 @@ __pypackages__/
 
 .venv
 virtual-env/ 
+bin/activate
 
 *.pyc 

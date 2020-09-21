@@ -1,0 +1,12 @@
+files:
+- filename: test-suite/closure/closure-3.js
+  pointers:
+  - groundTruth: 1
+    lineNumber: 8
+    safe:
+      output:
+      - '#1:Sens[(20-CFA()|LSA[i:10,j:100]())]'
+      pointsToSize: 1
+      precision: 1.0
+      runtime: ' 0.0022'
+    varname: arr

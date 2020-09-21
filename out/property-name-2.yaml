@@ -1,0 +1,12 @@
+files:
+- filename: test-suite/property-name/property-name-2.js
+  pointers:
+  - groundTruth: 3
+    lineNumber: 9
+    safe:
+      output:
+      - '#-41:Sens[(20-CFA(0:1)|LSA[i:10,j:100]())]'
+      pointsToSize: 1
+      precision: 3.0
+      runtime: ' 0.0030'
+    varname: prop

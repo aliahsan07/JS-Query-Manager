@@ -1,0 +1,33 @@
+files:
+- filename: test-suite/prototype/prototype-4.js
+  pointers:
+  - groundTruth: 1
+    lineNumber: 12
+    safe:
+      output:
+      - '#9:Sens[(20-CFA()|LSA[i:10,j:100]())]'
+      pointsToSize: 1
+      precision: 1.0
+      runtime: ' 0.0019'
+    tajs:
+      output:
+      - '@Object#node17'
+      pointsToSize: 1
+      precision: 1.0
+      runtime: ' 0.0021'
+    varname: xCount
+  - groundTruth: 1
+    lineNumber: 13
+    safe:
+      output:
+      - '#9:Sens[(20-CFA()|LSA[i:10,j:100]())]'
+      pointsToSize: 1
+      precision: 1.0
+      runtime: ' 0.0019'
+    tajs:
+      output:
+      - '@Object#node17'
+      pointsToSize: 1
+      precision: 1.0
+      runtime: ' 0.0021'
+    varname: yCount

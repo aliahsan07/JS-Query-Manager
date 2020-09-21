@@ -1,0 +1,12 @@
+files:
+- filename: test-suite/arguments/arguments-1.js
+  pointers:
+  - groundTruth: 1
+    lineNumber: 1
+    safe:
+      output:
+      - '#7:Sens[(20-CFA()|LSA[i:10,j:100]())]'
+      pointsToSize: 1
+      precision: 1.0
+      runtime: ' 0.0019'
+    varname: arguments
