@@ -1,9 +1,15 @@
 # PEP 582; used by e.g. github.com/David-OConnor/pyflow
 __pypackages__/
 
-.venv
 virtual-env/ 
 bin/activate
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
 
 *.pyc 
 

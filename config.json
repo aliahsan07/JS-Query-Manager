@@ -1,1 +1,1 @@
-{"files": [{"name": "test-suite/property-name/property-name-4.js", "pointers": [{"varName": "t1", "lineNumber": "12", "pointsToSize": 1}, {"varName": "t2", "lineNumber": "13", "pointsToSize": 1}]}], "tajs": false, "safe": true}
+{"files": [{"name": "test-suite/prototype/prototype-5.js", "pointers": [{"varName": "c", "lineNumber": "8", "pointsToSize": 1}, {"varName": "c", "lineNumber": "11", "pointsToSize": 1}, {"varName": "c", "lineNumber": "13", "pointsToSize": 0}]}], "tajs": true, "safe": true}
