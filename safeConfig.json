@@ -1,0 +1,8 @@
+{
+  "heapBuilder": {
+    "recency": false,
+    "callsiteSensitivity": 20,
+    "loopIter": 100,
+    "loopDepth": 10
+  }
+}

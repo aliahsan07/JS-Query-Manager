@@ -10,6 +10,13 @@ def loadConfig():
     return config
 
 
+def loadToolConfig(filename):
+    with open(filename, 'r') as f:
+        config = json.load(f)
+
+    return config
+
+
 def loadPointersOfInterest(file):
     with open(file, 'r') as content_file:
         content = content_file.read()

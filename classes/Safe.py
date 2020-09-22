@@ -6,17 +6,16 @@ import time
 
 class Safe(Analysis):
 
-    def __init__(self, t=[], loopDepth=10, loopIter=100, callsiteSensitivity=20):
-        super().__init__(t)
+    def __init__(self, config=None):
+        super().__init__([])
+        heapBuilder = config["heapBuilder"]
+        self.loopDepth = heapBuilder["loopDepth"] if heapBuilder and "loopDepth" in heapBuilder else 10
+        self.loopIter = heapBuilder["loopIter"] if heapBuilder and "loopIter" in heapBuilder else 100
+        self.callsiteSensitivity = heapBuilder["callsiteSensitivity"] if heapBuilder and "callsiteSensitivity" in heapBuilder else 20
+        self.recencyAbstraction = heapBuilder["recency"] if heapBuilder and "recency" in heapBuilder else False
         self.baseCommand = ['safe', 'analyze',
                             '-analyzer:ptrSetFile=' + self.outputFile]
-        self.loopDepth = loopDepth
-        self.loopIter = loopIter
-        self.callsiteSensitivity = callsiteSensitivity
         self.timeTaken = 0.0
-
-    def runWithRecencyAbstraction(self):
-        return self.run('-heapBuilder:recency')
 
     def setCallsiteSensitivity(self, n):
         self.callsiteSensitivity = n
@@ -37,6 +36,9 @@ class Safe(Analysis):
 
         if self.loopIter is not None:
             command.append('-heapBuilder:loopIter=' + str(self.loopIter))
+
+        if self.recencyAbstraction:
+            command.append('-heapBuilder:recency')
 
     def run(self, *flags):
         print(">>>>> Running Safe on JS Program <<<<< ")
