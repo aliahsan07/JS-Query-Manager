@@ -6,3 +6,7 @@ virtual-env/
 bin/activate
 
 *.pyc 
+
+.vscode
+.prettierrc.json
+.DS_Store
