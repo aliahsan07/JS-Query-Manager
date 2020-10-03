@@ -1,4 +1,3 @@
-# Libraries
 import os
 import os.path
 import sys
@@ -12,7 +11,6 @@ from classes.TAJS import TAJS
 from classes.Safe import Safe
 from utils.FileUtils import deleteOldFiles, outputToFile
 from utils.ConfigUtils import loadPointersOfInterest, generateConfigFile, loadConfig, loadToolConfig
-# from configs.safeConfig import SafeConfig
 
 
 def runTool(tajsOn=False, safeOn=False, tajs=None, safe=None):
@@ -20,12 +18,8 @@ def runTool(tajsOn=False, safeOn=False, tajs=None, safe=None):
     if tajsOn:
         output = tajs.run()
         return output
-        # tajsOutput = tajs.runWithDeterminacy()
-        # tajsOutput = tajs.runWithDeterminacyAndUneval()
-        #tajsOutput = tajs.runBlendedAnalysis()
     elif safeOn:
         output = safe.run()
-        # safeOutput = safe.runWithRecencyAbstraction()
         return output
 
 
@@ -136,6 +130,5 @@ if __name__ == "__main__":
     parser.add_argument(
         "--watch", help="run on all test cases", action="store_true")
     args = parser.parse_args()
-    # safeConfig = SafeConfig() # TODO
     main(args.test, args.tajs, args.safe, args.watch,
          args.tajsConfig, args.safeConfig)

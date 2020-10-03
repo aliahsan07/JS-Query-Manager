@@ -8,7 +8,7 @@ class Safe(Analysis):
 
     def __init__(self, config=None):
         super().__init__([])
-        heapBuilder = config["heapBuilder"]
+        heapBuilder = config["heapBuilder"] if config else None
         self.loopDepth = heapBuilder["loopDepth"] if heapBuilder and "loopDepth" in heapBuilder else 10
         self.loopIter = heapBuilder["loopIter"] if heapBuilder and "loopIter" in heapBuilder else 100
         self.callsiteSensitivity = heapBuilder["callsiteSensitivity"] if heapBuilder and "callsiteSensitivity" in heapBuilder else 20
