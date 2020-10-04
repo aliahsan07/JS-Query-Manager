@@ -1,5 +1,5 @@
-# JS Query Manager
-Query Manager (for a lack of better word) is a Python engine that runs a JavaScript file against Static Analysis tools for pointer analysis. Specifically, it ouputs a points to set for source variables provided in the JS file. 
+# JavaScript Pointer Analysis Querier 
+JS Pointer Analysis Querier is a Python engine that runs JavaScript file(s) against Static Analysis tools for pointer analysis. Specifically, it ouputs a points to set for source variables provided in the JS file. 
 Currently, two tools are supported, [TAJS](https://github.com/cs-au-dk/TAJS) and [Safe](https://github.com/sukyoung/safe). 
 
 ## Requirements
