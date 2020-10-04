@@ -1,0 +1,14 @@
+{
+  "pointers": [
+    {
+      "variable": "obj",
+      "lineNumber": 11,
+      "groundTruth": 1
+    },
+    {
+      "variable": "o1",
+      "lineNumber": 16,
+      "groundTruth": 1
+    }
+  ]
+}

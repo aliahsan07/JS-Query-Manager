@@ -1,3 +1,11 @@
+/**
+ *
+ * @testcase_name object-sensitivity-3
+ * @version 1.0
+ * @description
+ * @groundtruth_file object-sensitivity-3.ground
+ */
+
 function X(num) {
   this.num = num;
 }
@@ -20,8 +28,3 @@ y2.setF(x2);
 
 y1.f;
 y2.f;
-
-var groundTruth = {
-  "f-21": 1,
-  "f-22": 1
-};

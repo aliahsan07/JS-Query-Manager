@@ -1,3 +1,11 @@
+/**
+ *
+ * @testcase_name prototype-3
+ * @version 1.0
+ * @description
+ * @groundtruth_file prototype-3.ground
+ */
+
 function Person(n) {
   this.setName(n);
   Person.prototype.count++;
@@ -20,7 +28,3 @@ var x = new Student("Joe Average", 1);
 delete x.m;
 var y = new Person("Ali");
 var z = x.m;
-
-var groundTruth = {
-  "z-22": 1
-};

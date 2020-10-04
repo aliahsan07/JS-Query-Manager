@@ -1,3 +1,11 @@
+/**
+ *
+ * @testcase_name context-sensitivity-2
+ * @version 1.0
+ * @description
+ * @groundtruth_file context-sensitivity-2.ground
+ */
+
 function testCxtSen(property, obj) {
   return obj[property];
 }
@@ -5,7 +13,7 @@ function testCxtSen(property, obj) {
 var obj = {
   first: [1, 2, 3],
   second: new String("any string"),
-  third: {}
+  third: {},
 };
 
 for (var prop in obj) {
@@ -13,7 +21,3 @@ for (var prop in obj) {
 }
 
 var secondObj = obj["second"];
-
-var groundTruth = {
-  "secondObj-15": 1
-};

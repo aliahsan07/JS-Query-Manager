@@ -1,0 +1,9 @@
+{
+  "pointers": [
+    {
+      "variable": "secondObj",
+      "lineNumber": 23,
+      "groundTruth": 1
+    }
+  ]
+}

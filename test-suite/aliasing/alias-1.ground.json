@@ -1,0 +1,14 @@
+{
+  "pointers": [
+    {
+      "variable": "dest",
+      "lineNumber": 10,
+      "groundTruth": 1
+    },
+    {
+      "variable": "src",
+      "lineNumber": 14,
+      "groundTruth": 1
+    }
+  ]
+}

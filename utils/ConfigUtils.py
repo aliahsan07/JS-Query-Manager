@@ -18,14 +18,9 @@ def loadToolConfig(filename):
 
 
 def loadPointersOfInterest(file):
-    with open(file, 'r') as content_file:
-        content = content_file.read()
-
-    values = re.findall(r'groundTruth.*?=\s*(.*?);',
-                        content, re.DOTALL | re.MULTILINE)
-
-    for value in values:
-        return json.loads(value)
+    pointerDataFile = file.split('.')[:-1][0] + '.ground.json'
+    with open(pointerDataFile, 'r') as f:
+        return json.load(f)["pointers"]
 
 
 def generateConfigFile(ptrs, testFile, tajsOn, safeOn):
@@ -39,12 +34,15 @@ def generateConfigFile(ptrs, testFile, tajsOn, safeOn):
     currentFile = configDict['files'][0]
     currentFile['pointers'] = []
 
-    for key, value in ptrs.items():
-        ptrName, line = key.split('-')
+    for ptr in ptrs:
+        varName = ptr['variable']
+        line = ptr['lineNumber']
+        pointsToSize = ptr['groundTruth']
+
         currentFile['pointers'].append({
-            "varName": ptrName,
+            "varName": varName,
             "lineNumber": line,
-            "pointsToSize": value
+            "pointsToSize": pointsToSize
         })
 
     with open('config.json', 'w') as outfile:

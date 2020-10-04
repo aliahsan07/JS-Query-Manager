@@ -1,12 +1,12 @@
 tests:
   aliases:
-    - name: "alias1"
+    - name: "alias-1"
       path: "test-suite/aliasing/alias1.js"
       description: "TODO"
-    - name: "alias2"
+    - name: "alias-2"
       path: "test-suite/aliasing/alias2.js"
       description: "TODO"
-    - name: "alias3"
+    - name: "alias-3"
       path: "test-suite/aliasing/alias3.js"
       description: "TODO"
 
@@ -25,15 +25,6 @@ tests:
     - name: "closure3"
       path: "test-suite/closure/closure-3.js"
       description: "TODO"
-    # - name: "closure4"
-    #   path: "test-suite/closure/closure-4.js"
-    #   description: "TODO"
-    # - name: "closure5"
-    #   path: "test-suite/closure/closure-5.js"
-    #   description: "TODO"
-    # - name: "closure6"
-    #   path: "test-suite/closure/closure-6.js"
-    #   description: "TODO"
 
   context-sensitivity:
     - name: "context-sensitvity1"
@@ -59,14 +50,11 @@ tests:
 
   flow-sensitivity:
     - name: "flow-sensitvity1"
-      path: "test-suite/flow-sensitivity/explicit-coercion-1.js"
-      description: "TODO"
-    - name: "flow-sensitvity2"
       path: "test-suite/flow-sensitivity/flow-sensitivity-1.js"
       description: "TODO"
-    # - name: "flow-sensitvity3"
-    #   path: "test-suite/flow-sensitivity/implicit-coercion-3.js"
-    #   description: "TODO"
+    - name: "flow-sensitvity2"
+      path: "test-suite/flow-sensitivity/flow-sensitivity-2.js"
+      description: "TODO"
 
   iife:
     - name: "iife1"

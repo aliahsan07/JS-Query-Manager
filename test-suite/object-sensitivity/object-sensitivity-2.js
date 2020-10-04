@@ -1,3 +1,11 @@
+/**
+ *
+ * @testcase_name object-sensitivity-2
+ * @version 1.0
+ * @description
+ * @groundtruth_file object-sensitivity-2.ground
+ */
+
 function X(num) {
   this.num = num;
 }
@@ -8,7 +16,7 @@ function Y() {
   Object.defineProperty(this, "setF", {
     set: function (x) {
       this.f = x;
-    }
+    },
   });
 }
 
@@ -23,5 +31,3 @@ y2.setF = x2;
 // y2.f should only point to x2
 y1.f;
 y2.f;
-
-var groundTruth = { "f-24": 1, "f-25": 1 };

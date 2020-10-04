@@ -1,0 +1,14 @@
+{
+  "pointers": [
+    {
+      "variable": "temp",
+      "lineNumber": 16,
+      "groundTruth": 1
+    },
+    {
+      "variable": "inner",
+      "lineNumber": 13,
+      "groundTruth": 1
+    }
+  ]
+}

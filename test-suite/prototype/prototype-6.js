@@ -1,3 +1,11 @@
+/**
+ *
+ * @testcase_name prototype-6
+ * @version 1.0
+ * @description
+ * @groundtruth_file prototype-6.ground
+ */
+
 function funcObject() {
   this.a = {};
 }
@@ -14,8 +22,3 @@ var c = new myObject();
 var d = new myObject();
 var test1 = c.a;
 var test2 = d.a;
-
-var groundTruth = {
-  "test1-15": 1,
-  "test2-16": 1
-};

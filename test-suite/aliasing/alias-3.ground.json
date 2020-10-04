@@ -1,0 +1,19 @@
+{
+  "pointers": [
+    {
+      "variable": "t2",
+      "lineNumber": 10,
+      "groundTruth": 2
+    },
+    {
+      "variable": "ext",
+      "lineNumber": 12,
+      "groundTruth": 1
+    },
+    {
+      "variable": "ins",
+      "lineNumber": 13,
+      "groundTruth": 1
+    }
+  ]
+}

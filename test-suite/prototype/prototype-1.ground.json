@@ -1,0 +1,9 @@
+{
+  "pointers": [
+    {
+      "variable": "z",
+      "lineNumber": 16,
+      "groundTruth": 0
+    }
+  ]
+}

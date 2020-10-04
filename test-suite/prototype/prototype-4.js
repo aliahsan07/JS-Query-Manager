@@ -1,3 +1,11 @@
+/**
+ *
+ * @testcase_name prototype-3
+ * @version 1.0
+ * @description
+ * @groundtruth_file prototype-3.ground
+ */
+
 function Student(name) {
   this.name = name;
   Student.prototype.count.x++;
@@ -15,8 +23,3 @@ var yCount = y.count;
 // student.prototype.f when you intialize it
 // reassign that count to some other object, whats the size of x.f
 // delete a field (delete a whole prototype), should not be a points to set
-
-var groundTruth = {
-  "xCount-12": 1,
-  "yCount-13": 1
-};

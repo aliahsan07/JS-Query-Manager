@@ -1,0 +1,14 @@
+{
+  "pointers": [
+    {
+      "variable": "xCount",
+      "lineNumber": 20,
+      "groundTruth": 1
+    },
+    {
+      "variable": "yCount",
+      "lineNumber": 21,
+      "groundTruth": 1
+    }
+  ]
+}

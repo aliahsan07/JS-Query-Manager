@@ -1,0 +1,14 @@
+{
+  "pointers": [
+    {
+      "variable": "t1",
+      "lineNumber": 13,
+      "groundTruth": 1
+    },
+    {
+      "variable": "t1",
+      "lineNumber": 19,
+      "groundTruth": 1
+    }
+  ]
+}

@@ -1,3 +1,11 @@
+/**
+ *
+ * @testcase_name extend-example-1
+ * @version 1.0
+ * @description extend code inspired from jquery
+ * @groundtruth_file extend-example-1.ground
+ */
+
 var extend = function () {
   // Variables
   var extended = {};
@@ -41,11 +49,11 @@ var extend = function () {
 var object1 = {
   apple: 0,
   banana: { weight: 52, price: 100 },
-  cherry: 97
+  cherry: 97,
 };
 var object2 = {
   banana: { price: 200 },
-  durian: 100
+  durian: 100,
 };
 
 // Create a new object by combining two or more objects
@@ -54,10 +62,3 @@ var deep = extend(true, object1, object2);
 
 var shallowBanana = shallow.banana;
 var deepBanana = deep.banana;
-
-var groundTruth = {
-  "shallow-52": 1,
-  "deep-53": 1,
-  "shallowBanana-55": 1,
-  "deepBanana-56": 1
-};

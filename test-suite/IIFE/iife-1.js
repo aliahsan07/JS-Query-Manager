@@ -1,5 +1,13 @@
+/**
+ *
+ * @testcase_name iife-1
+ * @version 1.0
+ * @description
+ * @groundtruth_file iife-1.ground
+ */
+
 var x = {
-  c: {}
+  c: {},
 };
 
 var t1 = x.c;
@@ -9,8 +17,3 @@ var t1 = x.c;
 })();
 
 t1 = x.c;
-
-var groundTruth = {
-  "t1-5": 1,
-  "t1-11": 1
-};

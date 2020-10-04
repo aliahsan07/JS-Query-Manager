@@ -1,0 +1,24 @@
+{
+  "pointers": [
+    {
+      "variable": "shallow",
+      "lineNumber": 60,
+      "groundTruth": 1
+    },
+    {
+      "variable": "deep",
+      "lineNumber": 61,
+      "groundTruth": 1
+    },
+    {
+      "variable": "shallowBanana",
+      "lineNumber": 63,
+      "groundTruth": 1
+    },
+    {
+      "variable": "deepBanana",
+      "lineNumber": 64,
+      "groundTruth": 1
+    }
+  ]
+}

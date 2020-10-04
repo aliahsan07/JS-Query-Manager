@@ -1,3 +1,11 @@
+/**
+ *
+ * @testcase_name context-sensitivity-3
+ * @version 1.0
+ * @description
+ * @groundtruth_file context-sensitivity-3.ground
+ */
+
 function TestObject(t) {
   function closure() {
     return t;
@@ -11,8 +19,3 @@ var y = TestObject({});
 
 var X = x();
 var Y = y();
-
-var groundTruth = {
-  "X-12": 1,
-  "Y-13": 1
-};
