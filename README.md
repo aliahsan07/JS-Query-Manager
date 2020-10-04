@@ -64,36 +64,6 @@ files:
       precision: 1.0
       runtime: ' 0.0014'
     varname: c
-  - groundTruth: 1
-    lineNumber: 11
-    safe:
-      output:
-      - '#1:Sens[(20-CFA()|LSA[i:10,j:100]())]'
-      pointsToSize: 1
-      precision: 1.0
-      runtime: ' 0.0012'
-    tajs:
-      output:
-      - '@Object#node14'
-      pointsToSize: 1
-      precision: 1.0
-      runtime: ' 0.0014'
-    varname: c
-  - groundTruth: 0
-    lineNumber: 13
-    safe:
-      output: []
-      pointsToSize: 0
-      precision: 1.0
-      runtime: ' 0.0012'
-    tajs:
-      output: []
-      pointsToSize: 0
-      precision: 1.0
-      runtime: ' 0.0014'
-    varname: c
-
-
 ```
 
 ## Roadmap
