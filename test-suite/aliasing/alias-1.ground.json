@@ -1,9 +1,14 @@
 {
+  "description": "We are interested in points to set of the variable dest, particularly it should only alias the variable src",
   "pointers": [
     {
       "variable": "dest",
       "lineNumber": 10,
-      "groundTruth": 1
+      "groundTruth": 1,
+      "mayAlias": ["src"],
+      "notMayAlias": ["src"],
+      "mustAlias": ["result"],
+      "notMustAlias": ["result"]
     },
     {
       "variable": "src",

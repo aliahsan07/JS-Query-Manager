@@ -7,9 +7,10 @@
  */
 
 function f() {
-  return {
+  const a =  {
     evalWorks: true,
   };
+  return a;
 }
 
 var test = eval("f()");

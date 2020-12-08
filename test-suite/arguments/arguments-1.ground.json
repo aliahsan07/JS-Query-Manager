@@ -1,4 +1,5 @@
 {
+  "description": "We are interested in points to set of the arguments array in JavaScript functions.",
   "pointers": [
     {
       "variable": "arguments",

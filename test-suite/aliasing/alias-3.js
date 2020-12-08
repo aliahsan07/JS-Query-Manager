@@ -15,11 +15,3 @@ src["ins"] = {};
 var prop = Math.random() > 0.5 ? "ext" : "ins";
 
 var t = src[prop];
-
-var t2 = t;
-
-var groundTruth = {
-  "t2-10": 2,
-  "ext-12": 1,
-  "ins-13": 1,
-};

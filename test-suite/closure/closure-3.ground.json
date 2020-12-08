@@ -1,9 +1,14 @@
 {
+  "description": "We are interested in points to set of the variable arr in line 16 (inside catch block).",
   "pointers": [
     {
       "variable": "arr",
       "lineNumber": 16,
-      "groundTruth": 1
+      "groundTruth": 1,
+      "mayAlias": ["arr(line 9)"],
+      "notMayAlias": [],
+      "mustAlias": ["arr(line 9)"],
+      "notMustAlias": []
     }
   ]
 }

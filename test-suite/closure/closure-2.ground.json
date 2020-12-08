@@ -1,9 +1,14 @@
 {
+  "description": "We are interested in points to set of the variable n in line 12, it should point to name (line 12) which itself points to two objects",
   "pointers": [
     {
       "variable": "n",
       "lineNumber": 12,
-      "groundTruth": 2
+      "groundTruth": 2,
+      "mayAlias": ["name:[]", "name:{}"],
+      "notMayAlias": ["displayName", "init"],
+      "mustAlias": ["name:[]", "name:{}"],
+      "notMustAlias": ["displayName", "init"]
     }
   ]
 }

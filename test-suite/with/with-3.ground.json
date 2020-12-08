@@ -1,24 +1,41 @@
 {
+  "description": "We are interested in points to set of variable t1, t2 that are linked with `with` calls.",
   "pointers": [
     {
       "variable": "t1",
       "lineNumber": 16,
-      "groundTruth": 1
+      "groundTruth": 1,
+      "mayAlias": ["test.a.b (line 11)"],
+      "notMayAlias": ["test, test.a.d"],
+      "mustAlias": ["test.a.b (line 11)"],
+      "notMustAlias": ["test, test.a.d"]
     },
     {
       "variable": "t2",
       "lineNumber": 17,
-      "groundTruth": 1
+      "groundTruth": 1,
+      "mayAlias": ["test.a.d (line 12)"],
+      "notMayAlias": ["test, test.a.b"],
+      "mustAlias": ["test.a.d (line 12)"],
+      "notMustAlias": ["test, test.a.b"]
     },
     {
       "variable": "t1",
       "lineNumber": 23,
-      "groundTruth": 1
+      "groundTruth": 1,
+      "mayAlias": ["test.a.b (line 20)", "test.a.b (line 11)"],
+      "notMayAlias": ["test, test.a.d"],
+      "mustAlias": ["test.a.b (line 20)"],
+      "notMustAlias": ["test, test.a.d"]
     },
     {
       "variable": "t2",
       "lineNumber": 24,
-      "groundTruth": 1
+      "groundTruth": 1,
+      "mayAlias": ["test.a.d (line 12)"],
+      "notMayAlias": ["test, test.a.b"],
+      "mustAlias": ["test.a.d (line 12)"],
+      "notMustAlias": ["test, test.a.b"]
     }
   ]
 }

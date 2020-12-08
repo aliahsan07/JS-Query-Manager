@@ -1,4 +1,5 @@
 {
+  "description": "We are interested in guaging whether a tool is able to infer the String object from eval call.",
   "pointers": [
     {
       "variable": "value",

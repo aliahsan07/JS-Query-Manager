@@ -1,9 +1,14 @@
 {
+  "description": "We are interested in points to set of variable obj in line 11 that's inside the with statement",
   "pointers": [
     {
       "variable": "obj",
       "lineNumber": 11,
-      "groundTruth": 1
+      "groundTruth": 1,
+      "mayAlias": ["o1"],
+      "notMayAlias": ["foo"],
+      "mustAlias": ["o1"],
+      "notMustAlias": ["foo"]
     },
     {
       "variable": "o1",

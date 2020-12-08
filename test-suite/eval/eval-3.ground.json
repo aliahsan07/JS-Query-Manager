@@ -1,9 +1,14 @@
 {
+  "description": "We are interested in points to set of variable test coming from eval call.",
   "pointers": [
     {
       "variable": "test",
       "lineNumber": 14,
-      "groundTruth": 1
+      "groundTruth": 1,
+      "mayAlias": ["obj.a"],
+      "notMayAlias": ["obj", "obj.b"],
+      "mustAlias": ["obj.a"],
+      "notMustAlias": ["obj", "obj.b"]
     }
   ]
 }

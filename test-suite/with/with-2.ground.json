@@ -1,19 +1,32 @@
 {
+  "description": "We are interested in points to set of variable t1, t2 and t3 that are linked with `with` calls. Particular interst is t3 which points to a leaked variable.",
   "pointers": [
     {
       "variable": "t1",
       "lineNumber": 26,
-      "groundTruth": 1
+      "groundTruth": 1,
+      "mayAlias": ["a (line 11)"],
+      "notMayAlias": ["a (line 16), o2, o2.b"],
+      "mustAlias": ["a (line 11)"],
+      "notMustAlias": ["a (line 16), o2, o2.b"]
     },
     {
       "variable": "t2",
       "lineNumber": 27,
-      "groundTruth": 0
+      "groundTruth": 0,
+      "mayAlias": [],
+      "notMayAlias": ["a(line 11)", "a(line 16)", "o2", "02.b"],
+      "mustAlias": [],
+      "notMustAlias": ["a(line 11)", "a(line 16)", "o2", "02.b"]
     },
     {
       "variable": "t3",
       "lineNumber": 28,
-      "groundTruth": 1
+      "groundTruth": 1,
+      "mayAlias": ["a (line 11)"],
+      "notMayAlias": ["a (line 16), o2, o2.b"],
+      "mustAlias": ["a (line 11)"],
+      "notMustAlias": ["a (line 16), o2, o2.b"]
     }
   ]
 }

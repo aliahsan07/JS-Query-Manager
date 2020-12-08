@@ -1,19 +1,14 @@
 {
+  "description": "We are interested in points to set of the variable t, particularly it should alias src[ext] and src[ins]",
   "pointers": [
     {
-      "variable": "t2",
-      "lineNumber": 10,
-      "groundTruth": 2
-    },
-    {
-      "variable": "ext",
-      "lineNumber": 12,
-      "groundTruth": 1
-    },
-    {
-      "variable": "ins",
-      "lineNumber": 13,
-      "groundTruth": 1
+      "variable": "t",
+      "lineNumber": 17,
+      "groundTruth": 2,
+      "mayAlias": ["src.ext", "src.dest"],
+      "notMayAlias": ["src", "dest"],
+      "mustAlias": ["src.ext", "src.dest"],
+      "notMustAlias": ["src", "dest"]
     }
   ]
 }

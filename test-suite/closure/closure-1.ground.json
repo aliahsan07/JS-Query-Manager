@@ -1,9 +1,14 @@
 {
+  "description": "We are interested in points to set of the variable temp in line 16, it should point to the function inner",
   "pointers": [
     {
       "variable": "temp",
       "lineNumber": 16,
-      "groundTruth": 1
+      "groundTruth": 1,
+      "mayAlias": ["inner"],
+      "notMayAlias": ["makeGetter"],
+      "mustAlias": ["inner"],
+      "notMustAlias": ["makeGetter"]
     },
     {
       "variable": "inner",

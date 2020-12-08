@@ -1,4 +1,5 @@
 {
+  "description": "We are interested in points to set of the variable b, particularly it should only alias the variable a",
   "pointers": [
     {
       "variable": "a",
@@ -8,7 +9,11 @@
     {
       "variable": "b",
       "lineNumber": 11,
-      "groundTruth": 1
+      "groundTruth": 1,
+      "mayAlias": ["a"],
+      "notMayAlias": [],
+      "mustAlias": ["a"],
+      "notMustAlias": []
     }
   ]
 }
