@@ -71,7 +71,35 @@ def writeSafetoYAML(safeOutput, cumulativeOutput, runtime=0.0):
             pointers['safe']['pointsToSize'] = len(pointsTo)
 
 
-def outputToFile(initialConfig, tajsOutput, safeOutput, timers):
+# TODO: repetitive functions for all tools
+def writeWALAtoYAML(walaOutput, cumulativeOutput, runtime=0.0):
+
+    refinedOutput = {}
+    for key in walaOutput.keys():
+        keyAsStr = str(parseKeys(key))
+        refinedOutput[keyAsStr] = walaOutput[key]
+
+    files = cumulativeOutput['files']
+    for file in files:
+        for pointers in file['pointers']:
+            varName = pointers['varname']
+            if '.' in varName:
+                varName = varName.split('.')[-1]
+            key = varName  # TODO
+            pointsTo = []
+            try:
+                pointsTo = refinedOutput[key]
+            except:
+                pass
+            pointers['wala'] = {}
+            pointers['wala']['runtime'] = f"{runtime: 0.4f}"
+            pointers['wala']['output'] = pointsTo
+            pointers['wala']['precision'] = comparePrecision(
+                pointers['groundTruth'], pointsTo)
+            pointers['wala']['pointsToSize'] = len(pointsTo)
+
+
+def outputToFile(initialConfig, tajsOutput, safeOutput, walaOutput, timers):
     cumulativeOutput = {}  # stores the final state of the analysis after running all tools
 
     cumulativeOutput['files'] = []
@@ -100,6 +128,10 @@ def outputToFile(initialConfig, tajsOutput, safeOutput, timers):
     if safeOutput is not None:
         writeSafetoYAML(
             safeOutput, cumulativeOutput, timers["safeTime"])
+    if walaOutput is not None:
+        writeWALAtoYAML(
+            walaOutput, cumulativeOutput, timers["walaTime"]
+        )
     print(">>>>> Outputting to output.yaml file <<<<< ")
     with open('out/%s.yaml' % outputFileName, 'w') as f:
         data = yaml.dump(cumulativeOutput, f)
@@ -113,5 +145,10 @@ def deleteOldFiles():
 
     try:
         os.remove("safeOutput.json")
+    except:
+        pass
+
+    try:
+        os.remove("walaOutput.json")
     except:
         pass

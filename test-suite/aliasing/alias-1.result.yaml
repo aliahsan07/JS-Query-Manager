@@ -1,0 +1,18 @@
+safe: 
+    dest: 
+        - "#4:Sens[(20-CFA()|LSA[i:10,j:100]())]"
+    src: 
+        - "#4:Sens[(20-CFA()|LSA[i:10,j:100]())]]"
+tajs:
+    dest: 
+        - "@Object#node12"
+    src: 
+        - "@Object#node12"
+wala:
+    dest: 
+        - "[SITE_IN_NODE{<ctor for <JavaScriptLoader,LObject>>:NEW <JavaScriptLoader,LObject>@2 in CallStringContext: [ example.js.do()LRoot;@10 ]}]"
+        - "[[Core[TypeError]]]"
+    src:
+    - "[SITE_IN_NODE{<ctor for <JavaScriptLoader,LObject>>:NEW <JavaScriptLoader,LObject>@2 in CallStringContext: [ example.js.do()LRoot;@10 ]}]"     
+observation:
+    safe, tajs, wala have dest aliasing src variable, wala additionally points to TypeError 

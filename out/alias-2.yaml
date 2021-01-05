@@ -1,0 +1,19 @@
+files:
+- filename: test-suite/aliasing/alias-2.js
+  pointers:
+  - groundTruth: 1
+    lineNumber: 9
+    varname: a
+    wala:
+      output: []
+      pointsToSize: 0
+      precision: 0
+      runtime: ' 0.0026'
+  - groundTruth: 1
+    lineNumber: 11
+    varname: b
+    wala:
+      output: []
+      pointsToSize: 0
+      precision: 0
+      runtime: ' 0.0026'

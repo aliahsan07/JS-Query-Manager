@@ -23,11 +23,12 @@ def loadPointersOfInterest(file):
         return json.load(f)["pointers"]
 
 
-def generateConfigFile(ptrs, testFile, tajsOn, safeOn):
+def generateConfigFile(ptrs, testFile, tajsOn, safeOn, walaOn):
 
     configDict = {'files': []}
     configDict['tajs'] = tajsOn
     configDict['safe'] = safeOn
+    configDict['wala'] = walaOn
     configDict['files'].append({
         "name": testFile,
     })

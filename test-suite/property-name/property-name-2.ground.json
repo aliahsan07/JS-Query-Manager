@@ -1,9 +1,14 @@
 {
+  "description": "We are interested in points to set of variable prop insde for in block.",
   "pointers": [
     {
       "variable": "prop",
       "lineNumber": 17,
-      "groundTruth": 3
+      "groundTruth": 3,
+      "mayAlias": ["foo(line 9)"],
+      "notMayAlias": ["obj", "obj.a", "obj.b", "name_obj"],
+      "mustAlias": ["foo(line 9)"],
+      "notMustAlias": ["obj", "obj.a", "obj.b", "name_obj"]
     }
   ]
 }

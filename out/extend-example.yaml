@@ -2,38 +2,14 @@ files:
 - filename: test-suite/property-name/extend-example.js
   pointers:
   - groundTruth: 1
-    lineNumber: 52
-    safe:
-      output:
-      - '#1:Sens[(20-CFA(0:1)|LSA[i:10,j:100]())]'
-      pointsToSize: 1
-      precision: 1.0
-      runtime: ' 0.0019'
+    lineNumber: 60
     varname: shallow
   - groundTruth: 1
-    lineNumber: 53
-    safe:
-      output:
-      - '#1:Sens[(20-CFA(0:5)|LSA[i:10,j:100]())]'
-      pointsToSize: 1
-      precision: 1.0
-      runtime: ' 0.0019'
+    lineNumber: 61
     varname: deep
   - groundTruth: 1
-    lineNumber: 55
-    safe:
-      output:
-      - '#43:Sens[(20-CFA()|LSA[i:10,j:100]())]'
-      pointsToSize: 1
-      precision: 1.0
-      runtime: ' 0.0019'
+    lineNumber: 63
     varname: shallowBanana
   - groundTruth: 1
-    lineNumber: 56
-    safe:
-      output:
-      - '#1:Sens[(20-CFA(2:16,1:10,0:5)|LSA[i:10,j:100](2:1(0),1:7(1)))]'
-      pointsToSize: 1
-      precision: 1.0
-      runtime: ' 0.0019'
+    lineNumber: 64
     varname: deepBanana

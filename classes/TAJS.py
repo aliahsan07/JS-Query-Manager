@@ -10,7 +10,7 @@ class TAJS(Analysis):
 
     def __init__(self, config=None):
         super().__init__([])
-        self.baseCommand = ['java', '-jar', '../TAJS/TAJS-run/dist/tajs-all.jar',
+        self.baseCommand = ['java', '-jar', './TAJS/tajs-all.jar',
                             '-ptrSetFile', self.outputFile, '-quiet']
         self.flags = ["-uneval", "-determinacy",
                       ("-blended-analysis", "-generate-log", "-log-file", "log-file.log"), ("-unsound", "X")]

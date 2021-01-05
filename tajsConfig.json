@@ -1,4 +1,4 @@
 {
   "uneval": true,
-  "determinacy": false
+  "determinacy": true
 }

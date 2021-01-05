@@ -1,0 +1,33 @@
+files:
+- filename: test-suite/aliasing/alias-1.js
+  pointers:
+  - groundTruth: 1
+    lineNumber: 10
+    safe:
+      output:
+      - '#4:Sens[(20-CFA()|LSA[i:10,j:100]())]'
+      pointsToSize: 1
+      precision: 1.0
+      runtime: ' 0.0022'
+    tajs:
+      output:
+      - '@Object#node12'
+      pointsToSize: 1
+      precision: 1.0
+      runtime: ' 0.0056'
+    varname: dest
+  - groundTruth: 1
+    lineNumber: 14
+    safe:
+      output:
+      - '#4:Sens[(20-CFA()|LSA[i:10,j:100]())]'
+      pointsToSize: 1
+      precision: 1.0
+      runtime: ' 0.0022'
+    tajs:
+      output:
+      - '@Object#node12'
+      pointsToSize: 1
+      precision: 1.0
+      runtime: ' 0.0056'
+    varname: src

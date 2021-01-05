@@ -2,19 +2,19 @@ files:
 - filename: test-suite/closure/closure-1.js
   pointers:
   - groundTruth: 1
-    lineNumber: 8
+    lineNumber: 16
     safe:
       output:
       - '#2:Sens[(20-CFA(0:1)|LSA[i:10,j:100]())]'
       pointsToSize: 1
       precision: 1.0
-      runtime: ' 0.0018'
+      runtime: ' 0.0035'
     varname: temp
   - groundTruth: 1
-    lineNumber: 5
+    lineNumber: 13
     safe:
       output: []
       pointsToSize: 0
       precision: 0
-      runtime: ' 0.0018'
+      runtime: ' 0.0035'
     varname: inner

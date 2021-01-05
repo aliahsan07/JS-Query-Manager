@@ -1,9 +1,15 @@
 {
+  "description": "We are interested in points to set of variable foo insde for in block.",
   "pointers": [
     {
       "variable": "foo",
       "lineNumber": 15,
-      "groundTruth": 1
+      "groundTruth": 1,
+      "mayAlias": ["foo(line 9)"],
+      "notMayAlias": ["obj", "obj.a", "obj.b", "name_obj"],
+      "mustAlias": ["foo(line 9)"],
+      "notMustAlias": ["obj", "obj.a", "obj.b", "name_obj"]
+    
     }
   ]
 }
