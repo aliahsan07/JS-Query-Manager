@@ -73,3 +73,18 @@ files:
 
 Currently, I dont have a scripty way to invoke the points to set on WALA which means running this Python script wont actually query WALA (it works for other two tools). To get results for WALA, I run the [WALA start](https://github.com/wala/WALA-start) script provided by the WALA team. I extract the IR variables for the source variables and then use the points-to set abstraction provided by WALA to get the required points to information. 
 
+### [](#list-of-tests)List of tests
+
+| Type                | No. of Tests |
+| ------------------- | :----------: |
+| Aliasing            |      3       |
+| Closures            |      3       |
+| Eval                |      3       |
+| With                |      3       |
+| IIFE                |      2       |
+| Arguments Array     |      1       |
+| Dynamic Properties  |      5       |
+| Prototype           |      6       |
+| Flow Sensitivity    |      2       |
+| Context Sensitivity |      3       |
+| Object Sensitivity  |      3       |
