@@ -16,3 +16,5 @@ venv.bak/
 .vscode
 .prettierrc.json
 .DS_Store
+
+*.log 
