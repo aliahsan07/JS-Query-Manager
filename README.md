@@ -2,6 +2,9 @@
 JS Pointer Analysis Querier is a Python engine that runs JavaScript file(s) against Static Analysis tools for pointer analysis. Specifically, it ouputs a points to set for source variables provided in the JS file. 
 Currently, two tools are supported, [TAJS](https://github.com/cs-au-dk/TAJS) and [Safe](https://github.com/sukyoung/safe). 
 
+## Ground Truth
+We define the ground truth as how many heap locations does the variable point to at the runtime. 
+
 ## Requirements
 - Python 3.8 or later
 
@@ -66,7 +69,7 @@ files:
     varname: c
 ```
 
-## Roadmap
+## Note on WALA
 
-There are a couple of things I'm working on right now. First and foremost is integrating the [WALA](https://github.com/wala/WALA) into the toolchain. It will be supported in the same way with flags deciding whether to run it on a file or not. Also, working on dockerizing the images instead of providing binaries and jar files for tools. 
+Currently, I dont have a scripty way to invoke the points to set on WALA which means running this Python script wont actually query WALA (it works for other two tools). To get results for WALA, I run the [WALA start](https://github.com/wala/WALA-start) script provided by the WALA team. I extract the IR variables for the source variables and then use the points-to set abstraction provided by WALA to get the required points to information. 
 
