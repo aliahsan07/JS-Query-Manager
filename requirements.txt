@@ -10,6 +10,6 @@ mdutils==1.1.1
 pycodestyle==2.5.0
 pyflakes==2.1.1
 PyYAML==5.3.1
-requests==2.23.0
+requests==2.32.2
 typing==3.7.4.1
 urllib3==1.25.9
