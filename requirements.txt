@@ -4,7 +4,7 @@ chardet==3.0.4
 dataclasses==0.6
 entrypoints==0.3
 flake8==3.7.9
-idna==2.9
+idna==3.7
 mccabe==0.6.1
 mdutils==1.1.1
 pycodestyle==2.5.0
